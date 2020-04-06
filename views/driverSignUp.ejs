@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Driver Registration</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="styles/bootstrap.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="styles/style.css" rel="stylesheet" type="text/css" />
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <div class="logo">
+          <a href="/"><img src="images/logo.jpg" alt=""/></a>
+        </div>
+        <h1 id="driverHeading">Driver SIGNUP</h1>
+
+        <div class="menu">
+          <ul class="nav" id="nav">
+            <li><a href="/">Home</a></li>
+            <li>
+              <a href="/driverlogin" id="login">
+                <span class="fa fa-sign-in"></span> Login</a
+              >
+            </li>
+          </ul>
+        </div>
+        <!----//End-top-nav---->
+      </div>
+    </div>
+    <div class="driverBanner"></div>
+    
+      <form action="" method="POST" class="driverForm">
+        <h4><%= typeof error !='undefined' ? error : ""%></h4>
+
+        <div class="driver_details">
+          <h2>Personal Details</h2>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Full Name"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            id="email"
+            pattern=".+@gmail.com"
+          size="30"
+            placeholder="example@email.com"
+            required
+          />
+          <input
+            type="tel"
+            name="phone"
+            id="phone"
+            placeholder="Phone # (03**-1234567)"
+            required
+            pattern="[0-9]{4}-[0-9]{7}"
+          />
+          <input
+            type="text"
+            name="cnic"
+            id="cnic"
+            placeholder="CNIC (74925-5287476-1)"
+            required
+            pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"
+          />
+          <input
+            type="text"
+            name="drivingLicense"
+            id="drivingLicense"
+            placeholder="Driving License"
+          /><br>
+          
+          <label for="gender" style = "color: white;" >Gender : </label>
+          <input type="radio" name="gender" value="Male" required >Male</input>
+          <input type="radio" name="gender" value="Female">Female</input>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password (UC, LC, Number/SpecialChar and min 8 Chars)"
+            pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+            required
+            
+          /> 
+        </div>
+        <div class="car_details">
+          <h2>Vehicle Details</h2>
+          <input
+            type="text"
+            name="vehicleEngine"
+            id="vehicleEngine"
+            placeholder="Vehicle Engine Number"
+            required
+          />
+          <input
+            type="number"
+            name="vehicleModel"
+            id="vehicleModel"
+            min="1996"
+            placeholder="Vehicle Model"
+            required
+          />
+          <input type="text" 
+          name="licensePlate" 
+          id="licensePlate" 
+          placeholder="License Plate Number (ABC-1234)" 
+          pattern="[A-Z]{1,3}-[0-9]{1,4}"
+          required
+          
+          >
+          <select name="vehicleClass" id="vehicleClass" required>
+            <option value="" disabled selected>Vehicle Class</option>
+            <option value="Auto">Auto</option>
+            <option value="Manual">Manual</option>
+          </select>
+          <select name="vehicleType" id="vehicleType" required>
+            <option value="" disabled selected>Vehicle Type</option>
+            <option value="car">Car</option>
+            <option value="bike">Bike</option>
+            <option value="truck">Truck</option>
+            <option value="van">Van</option>
+            <option value="bus">Bus</option>
+          </select>
+          <button type="submit" name="submit"><b>Apply</b></button>
+        </div>
+        <p>Already Have An Account? <a href="/driverlogin">Login</a></p>
+
+      </form>
+    <div class="driver_signup_footer_pic">
+      <img src="images/passengerSignupFooter.jpg" alt="" />
+    </div>
+  </body>
+</html>

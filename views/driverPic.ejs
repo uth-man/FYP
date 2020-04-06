@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <!--<link rel="stylesheet" href="styles/driverPic.css" />-->
+    <title>Driver</title>
+    <style>
+      .header {
+        background-color: #105b63;
+        padding: 5px;
+      }
+      .header h3 {
+        color: white;
+        text-align: center;
+      }
+      form {
+        text-align: center;
+      }
+      h3 {
+        text-align: center;
+      }
+      .img-container {
+        text-align: center;
+        padding: 20px;
+      }
+      .img-container img {
+        width: 20%;
+        border: 0px solid white;
+        border-radius: 200px;
+        box-shadow: #105b63 -10px 0px 100px -40px;
+      }
+      form {
+        text-align: center;
+        width: 50%;
+        margin-left: 20%;
+      }
+      form button {
+        margin-left: 100%;
+      }
+      .error {
+        text-align: center;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <div class="header">
+      <h3>Upload your pic</h3>
+    </div>
+    <div class="img-container">
+      <img
+        src="<%= typeof file != 'undefined' ? file : 'uploads/defaultPic.png'%>"
+        alt=""
+      />
+    </div>
+    <div class="error"><%= typeof msg != 'undefined' ? msg : ''%></div>
+
+    <form action="/providing" method="POST" enctype="multipart/form-data">
+      <div class="file-field input-field">
+        <div class="btn grey">
+          <span>Select</span>
+
+          <input type="file" name="pic" required />
+        </div>
+
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text" />
+        </div>
+      </div>
+      <button type="submit" class="btn button">Next</button>
+    </form>
+  </body>
+</html>

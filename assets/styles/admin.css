@@ -1,0 +1,40 @@
+body {
+  margin: 0px;
+  font-family: "Inter", sans-serif;
+  font-family: "Sen", sans-serif;
+
+  background: #105b63;
+}
+h4 {
+  color: red;
+  text-align: center;
+}
+.adminHeading {
+  margin: 100px;
+  color: #e49002;
+  text-align: center;
+  font-size: 50px;
+}
+.adminForm {
+  margin-left: 33%;
+  text-align: center;
+  border: solid 1px white;
+  border-radius: 20px;
+  width: 30%;
+  padding: 2%;
+}
+.adminForm label {
+  color: white;
+}
+.adminForm input {
+  margin: 20px;
+  padding: 4px;
+  width: 200px;
+}
+.adminForm button {
+  background-color: #105b63;
+  color: white;
+  border-radius: 20px;
+  font-size: 40px;
+  float: right;
+}

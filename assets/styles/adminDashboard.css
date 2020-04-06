@@ -1,0 +1,53 @@
+body {
+  background: rgb(231, 219, 231);
+}
+h1 {
+  padding: 20px;
+  text-align: center;
+  color: white;
+  background: #105b63;
+}
+.leftBody {
+  background: #105b63;
+  float: left;
+  width: 20%;
+  height: 650px;
+}
+.leftBody .users li {
+  list-style: none;
+  padding: 10px;
+}
+.leftBody .users a {
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+}
+.leftBody .users .current {
+  color: thistle;
+}
+.info {
+  margin-left: 35%;
+}
+.info ul {
+  font-size: 20px;
+  font-weight: 100;
+  list-style: none;
+  padding: 30px;
+  border: 1px solid black;
+  text-align: center;
+  width: 50%;
+  border-radius: 200px;
+}
+.info a {
+  text-decoration: none;
+  background-color: #105b63;
+  color: white;
+  position: relative;
+  top: 10px;
+  padding: 5px;
+  border-radius: 15px;
+}
+.info img {
+  width: 50%;
+  border-radius: -50px;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" style="  background: rgb(248, 248, 236)">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Driver Login</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link href="/styles/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/styles/style.css" rel="stylesheet" type="text/css" />
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body
+    style="  background: rgb(248, 248, 236);
+  "
+  >
+    <div class="header">
+      <div class="container">
+        <div class="logo">
+          <a href="/"><img src="images/logo.jpg" alt=""/></a>
+        </div>
+        <h1 id="passengerHeading">DRIVER LOGIN</h1>
+
+        <div class="menu">
+          <ul class="nav" id="nav">
+            <li><a href="/">Home</a></li>
+            <li>
+              <a href="/driversignup" id="login">
+                <span class="fa fa-user-plus"></span> SignUp</a
+              >
+            </li>
+          </ul>
+        </div>
+        <!----//End-top-nav---->
+      </div>
+    </div>
+    <div>
+      <form action="/upload" method="POST" class="driverLoginForm">
+        <h4><%= typeof error !='undefined' ? error : ""%></h4>
+        <i class="fa fa-sign-in"></i><br />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          pattern=".+@gmail.com"
+          size="30"
+          placeholder="Enter Your Email"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Passenger Registration</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link href="styles/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="styles/style.css" rel="stylesheet" type="text/css" />
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <div class="logo">
+          <a href="/"><img src="images/logo.jpg" alt=""/></a>
+        </div>
+        <h1 id="passengerHeading">PASSENGER SIGNUP</h1>
+
+        <div class="menu">
+          <ul class="nav" id="nav">
+            <li><a href="/">Home</a></li>
+            <li>
+              <a href="/passengerlogin" id="login">
+                <span class="fa fa-sign-in"></span> Login</a
+              >
+            </li>
+          </ul>
+        </div>
+        <!----//End-top-nav---->
+      </div>
+    </div>
+    <div class="passengerBanner"></div>
+    <div class="passengerForm">
+      <h4><%= typeof error !='undefined' ? error : ""%></h4>
+      <form action="/passengersignup" method="POST">
+        <input
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Full Name"
+          required
+        /><br />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          pattern=".+@gmail.com"
+          size="30"
+          placeholder="email@example.com"
+          required
+        />
+        <br />
+        <input
+          type="tel"
+          name="phone"
+          id="phone"
+          placeholder="03**-1234567"
+          required
+          pattern="[0-9]{4}-[0-9]{7}"
+        /><br />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password (UC, LC, Number/SpecialChar and min 8 Chars)"
+          pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+          required
+        />
+        <br />
+        <button type="submit" name="submit"><b>Sign Up</b></button>
+      </form>
+      <p>Already Have An Account? <a href="/passengerlogin">Login</a></p>
+    </div>
+    <div class="signup_footer_pic">
+      <img src="images/passengerSignupFooter.jpg" alt="" />
+    </div>
+  </body>
+</html>

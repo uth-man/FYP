@@ -1,0 +1,37 @@
+.header {
+  background-color: #105b63;
+  padding: 5px;
+}
+.header h3 {
+  color: white;
+  text-align: center;
+}
+form {
+  text-align: center;
+}
+h3 {
+  text-align: center;
+}
+.img-container {
+  text-align: center;
+  padding: 20px;
+}
+.img-container img {
+  width: 20%;
+  border: 0px solid white;
+  border-radius: 100%;
+
+  box-shadow: #105b63 -10px 0px 100px -40px;
+}
+form {
+  text-align: center;
+  width: 50%;
+  margin-left: 20%;
+}
+form button {
+  margin-left: 100%;
+}
+.error {
+  text-align: center;
+  color: red;
+}

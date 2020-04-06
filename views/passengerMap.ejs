@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/styles/mapPage.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Inter|Sen&display=swap"
+      rel="stylesheet"
+    />
+    <!----------------Map Dependencies-------------->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
+
+    <!---------------------------------------------->
+  </head>
+
+  <body>
+    <div class="header">
+      <span id="schedule"><a href="#">Schedule Ride</a></span>
+      <span class="dropdown"
+        ><a href="#"><%= data.name%></a>
+        <div class="dropdown-content">
+          <ul>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Notifications</a></li>
+            <li><a href="#">Notifications</a></li>
+            <li><a href="#">Notifications</a></li>
+            <li><a href="/passengerlogin/logout">LogOut</a></li>
+          </ul>
+        </div>
+      </span>
+    </div>
+    <!---->
+
+    <!---------------------Booking Details------------------>
+
+    <div class="bookingDetails">
+      <div class="head"><h1>Where Can We Pick You Up?</h1></div>
+      <form action="">
+        <input type="text" placeholder="Enter Pickup Location" /><br />
+        <button>Proceed</button>
+      </form>
+      <hr />
+    </div>
+    <!------------------------------------------------------->
+    <div id="map" class="map"></div>
+    <script type="text/javascript">
+      var map = new ol.Map({
+        target: "map",
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([30.3753, 69.3451]),
+          zoom: 10
+        })
+      });
+    </script>
+  </body>
+</html>

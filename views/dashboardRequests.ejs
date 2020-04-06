@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Passenger | Dashboard</title>
+    <link rel="stylesheet" href="/styles/adminDashboard.css" />
+  </head>
+  <body>
+    <h1>Requests (<%=result.length%>)</h1>
+    <div class="leftBody">
+      <ul class="users">
+        <li>
+          <a href="/admindashboard/passenger">Passenger</a>
+        </li>
+        <li><a href="/admindashboard/driver">Driver</a></li>
+        <li>
+          <a href="/admindashboard/requests" class="current">Driver Requests</a>
+        </li>
+      </ul>
+    </div>
+    <div class="info">
+      <% for(let i = 0 ; i < result.length; i++){ %> <%let id = result[i].id;%>
+
+      <ul>
+        <img src="<%=result[i].picture%>" alt="" />
+
+        <h2><%=result[i].name%></h2>
+        <li>Email : <%=result[i].email %></li>
+        <li>Phone : <%=result[i].phone %></li>
+        <li>IsVerified : <%=result[i].isVerified%></li>
+
+        <a href="/admindashboard/verifydriver/<%=id%>">Verify</a>
+      </ul>
+
+      <%}%>
+    </div>
+  </body>
+</html>
