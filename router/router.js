@@ -10,7 +10,7 @@ app.use(
   session({
     secret: "kjdsfljflrejfiasjf",
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
   })
 );
 

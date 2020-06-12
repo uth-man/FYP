@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="/styles/mapPage.css" />
+    <title>Passenger</title>
+    <!-- <meta http-equiv="x-ua-compatible" content="IE=edge" /> -->
+
     <link
       href="https://fonts.googleapis.com/css?family=Inter|Sen&display=swap"
       rel="stylesheet"
     />
     <!----------------Map Dependencies-------------->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css"
-      type="text/css"
-    />
-    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
+    <link rel="stylesheet" href="/styles/mapPage.css" />
+
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=<%=key%>&callback=initMap"
+    ></script>
 
     <!---------------------------------------------->
   </head>
@@ -45,21 +48,16 @@
       </form>
       <hr />
     </div>
-    <!------------------------------------------------------->
+    <!---------------------- Map ---------------------->
     <div id="map" class="map"></div>
+
     <script type="text/javascript">
-      var map = new ol.Map({
-        target: "map",
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        view: new ol.View({
-          center: ol.proj.fromLonLat([30.3753, 69.3451]),
-          zoom: 10
-        })
-      });
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 34.1688, lng: 73.2215 },
+          zoom: 12,
+        });
+      }
     </script>
   </body>
 </html>

@@ -26,7 +26,7 @@ router.post("/watching", async (req, res) => {
             name: req.session.name,
             phone: result[i].phone,
             email: req.session.email,
-            category: "passenger"
+            category: "passenger",
           };
           req.session.user = data;
           console.log(req.session);
@@ -34,7 +34,10 @@ router.post("/watching", async (req, res) => {
           if (req.session === undefined) {
             res.render("passengerLogin", { error: "Try Logging In Again" });
           } else {
-            res.render("passengerMap", { data: data });
+            res.render("passengerMap", {
+              data: data,
+              key: process.env.MAP_KEY,
+            });
           }
         }
       }
