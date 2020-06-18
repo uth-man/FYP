@@ -3,8 +3,9 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.set("view engine", "ejs");
-app.use(express.static("assets"));
+app.use(express.static("assets/"));
 //app.use("/assets", express.static("assets"));
+
 const session = require("express-session");
 app.use(
   session({

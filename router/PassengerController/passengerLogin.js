@@ -27,6 +27,7 @@ router.post("/watching", async (req, res) => {
             phone: result[i].phone,
             email: req.session.email,
             category: "passenger",
+            key: process.env.MAP_KEY,
           };
           req.session.user = data;
           console.log(req.session);
@@ -36,7 +37,6 @@ router.post("/watching", async (req, res) => {
           } else {
             res.render("passengerMap", {
               data: data,
-              key: process.env.MAP_KEY,
             });
           }
         }

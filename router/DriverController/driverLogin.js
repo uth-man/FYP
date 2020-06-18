@@ -32,6 +32,7 @@ router.post("/", async (req, res) => {
             id: req.session.id,
             picture: result[i].picture,
             category: "driver",
+            key: process.env.MAP_KEY,
           };
           req.session.user = data;
           if (!req.session.user.picture) {
@@ -40,8 +41,7 @@ router.post("/", async (req, res) => {
             return res.render("driverPic", { data: req.session.user });
           } else {
             return res.render("driverMap", {
-              data: req.session.user,
-              key: process.env.MAP_KEY,
+              data: data,
             });
           }
         }

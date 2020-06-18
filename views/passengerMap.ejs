@@ -10,14 +10,8 @@
     />
     <!----------------Map Dependencies-------------->
     <link rel="stylesheet" href="/styles/mapPage.css" />
-
-    <script
-      async
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=<%=key%>&callback=initMap"
-    ></script>
-
-    <!---------------------------------------------->
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
 
   <body>
@@ -28,7 +22,7 @@
         <div class="dropdown-content">
           <ul>
             <li><a href="#">Profile</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="#">Schedule Ride</a></li>
             <li><a href="#">Notifications</a></li>
             <li><a href="#">Notifications</a></li>
             <li><a href="/passengerlogin/logout">LogOut</a></li>
@@ -42,8 +36,12 @@
 
     <div class="bookingDetails">
       <div class="head"><h1>Where Can We Pick You Up?</h1></div>
-      <form action="">
-        <input type="text" placeholder="Enter Pickup Location" /><br />
+      <form action="" id="search_form">
+        <input
+          type="text"
+          id="search"
+          placeholder="Enter Pickup Location"
+        /><br />
         <button>Proceed</button>
       </form>
       <hr />
@@ -51,13 +49,11 @@
     <!---------------------- Map ---------------------->
     <div id="map" class="map"></div>
 
-    <script type="text/javascript">
-      function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: 34.1688, lng: 73.2215 },
-          zoom: 12,
-        });
-      }
-    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap&libraries=places"
+    ></script>
+    <script src="/scripts/mapPassenger.js"></script>
   </body>
 </html>
