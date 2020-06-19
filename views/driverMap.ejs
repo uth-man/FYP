@@ -9,12 +9,6 @@
     <!----------------Map Dependencies-------------->
     <link rel="stylesheet" href="/styles/mapPage.css" />
 
-    <script
-      async
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap"
-    ></script>
-
     <!---------------------------------------------->
     <link rel="stylesheet" href="/styles/mapPage.css" />
     <title>Driver</title>
@@ -39,20 +33,14 @@
     <!---------------------- Map ---------------------->
     <div id="map" class="map"></div>
 
-    <script type="text/javascript">
-      function initMap() {
-        // Options
-        let options = {
-          center: { lat: 30.3753, lng: 69.3451 },
-          zoom: 8,
-        };
-        // New Map
-        map = new google.maps.Map(document.getElementById("map"), options);
-        // Add Marker
-        let market = new google.maps.Marker({
-          position: {},
-        });
-      }
-    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap"
+    ></script>
+    <script defer src="/scripts/mapDriver.js"></script>
+
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <script src="/web-sockets/driverSocket.js"></script>
   </body>
 </html>

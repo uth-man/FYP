@@ -3,6 +3,7 @@ const bcryptjs = require("bcryptjs");
 const express = require("express");
 const router = express.Router();
 
+
 router.post("/", async (req, res) => {
   let sql = "SELECT * FROM driver";
   db.query(sql, async (err, result) => {
