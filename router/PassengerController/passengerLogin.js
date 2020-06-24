@@ -30,12 +30,12 @@ router.post("/watching", async (req, res) => {
             key: process.env.MAP_KEY,
           };
           req.session.user = data;
-          console.log(req.session);
+          //console.log(req.session);
 
           if (req.session === undefined) {
             res.render("passengerLogin", { error: "Try Logging In Again" });
           } else {
-            res.render("passengerMap", {
+            res.render("passengerMapPick", {
               data: data,
             });
           }

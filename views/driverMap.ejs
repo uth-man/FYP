@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="/styles/mapPage.css" />
 
     <!---------------------------------------------->
+    <!-- socket -->
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <script src="/web-sockets/driverSocket.js"></script>
+
     <link rel="stylesheet" href="/styles/mapPage.css" />
     <title>Driver</title>
   </head>
@@ -31,6 +35,7 @@
     </div>
 
     <!---------------------- Map ---------------------->
+    <input type="hidden" id="_email" value="<%=data.email%>" />
     <div id="map" class="map"></div>
 
     <script
@@ -39,8 +44,5 @@
       src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap"
     ></script>
     <script defer src="/scripts/mapDriver.js"></script>
-
-    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
-    <script src="/web-sockets/driverSocket.js"></script>
   </body>
 </html>

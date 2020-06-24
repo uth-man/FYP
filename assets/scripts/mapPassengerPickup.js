@@ -1,41 +1,35 @@
-//const socket = io('http://localhost:8080')
 let map;
-let markers = [];
-let initialCurrentLocation;
+let pickupMark = [];
+
 function initMap() {
-    navigator.geolocation.getCurrentPosition(p => {
-        initialCurrentLocation = { lat: p.coords.latitude, lng: p.coords.longitude }
-        map.setCenter(initialCurrentLocation)
-    })
-    setInterval(() => {
-        if (navigator.geolocation) {
 
-            navigator.geolocation.getCurrentPosition((p) => {
+    // Set Current Location on Map
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(p => {
+            let currentPosition = { lat: p.coords.latitude, lng: p.coords.longitude }
+            map.setCenter(currentPosition);
+            addPickupMarker(currentPosition, '<strong>pick-up point</strong>');
+            let latlng = p.coords.latitude + "," + p.coords.longitude;
 
-                // Add Marker
-                let coords = { lat: p.coords.latitude, lng: p.coords.longitude }
-
-                //Get driver email
-                let driverEmail = document.getElementById('_email').value
-
-                // sending live location to server
-                socket.emit('update_location', { coords, driverEmail })
-
-                let iconImage = {
-                    url: "https://img.icons8.com/color/48/000000/car-top-view.png"
+            //get request to reverse Geocoding API
+            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                params: {
+                    latlng: latlng,
+                    key: 'AIzaSyBuWZhosWcom_vVhXGyFwUidpmhPf9z7FA'
                 }
-                addMarker(coords, iconImage)
-
-            }, (err) => {
+            }).then((response) => {
+                let formattedAddress = response.data.results[0].formatted_address;
+                input.value = formattedAddress;
+            }).catch((err) => {
                 console.log(err);
-            });
-        }
-    }, 3 * 1000)
 
-    // New Map
+            });
+        })
+
+    }
     map = new google.maps.Map(document.getElementById("map"), {
         zoom: 16,
-        draggableCursor: 'default',
+        draggableCursor: "default",
         disableDefaultUI: true,
         styles: [
             {
@@ -232,25 +226,102 @@ function initMap() {
                 ]
             }
         ]
-
-
     });
 
-    function addMarker(coords, icon) {
-        // Removing previous markers from Map
-        if (!markers.length == 0) {
-            markers.forEach(m => {
+
+    // Onclick Marker
+    map.addListener('click', (e) => {
+        let coords = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+        addPickupMarker(coords, 'pick-up point')
+        let latlng = e.latLng.lat() + "," + e.latLng.lng()
+
+        //get request to reverse Geocoding API
+        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+            params: {
+                latlng: latlng,
+                key: 'AIzaSyBuWZhosWcom_vVhXGyFwUidpmhPf9z7FA'
+            }
+        }).then((response) => {
+            let formattedAddress = response.data.results[0].formatted_address;
+            input.value = formattedAddress;
+        }).catch((err) => {
+            console.log(err);
+
+        });
+
+    })
+
+    // Form
+    let form = document.getElementById('search_form');
+
+    // Search bar auto-complete using &libraries=places in url
+    let input = document.getElementById('search');
+
+    // using places API
+    new google.maps.places.SearchBox(input);
+
+
+    input.addEventListener('change', (e) => {
+        e.preventDefault();
+
+        setTimeout(() => {
+            console.log(input.value);
+            //get request to Geocoding API
+            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                params: {
+                    address: input.value,
+                    key: 'AIzaSyBuWZhosWcom_vVhXGyFwUidpmhPf9z7FA'
+                }
+
+
+            }).then((response) => {
+                console.log(response.data.results[0].formatted_address);
+
+                let formattedAddress = response.data.results[0].formatted_address;
+                let coords = response.data.results[0].geometry.location;
+
+                input.value = formattedAddress;
+                addPickupMarker(coords, '<strong>pick-up point</strong>', coords)
+
+            }).catch((err) => {
+                console.log(err);
+
+            });
+        }, 1000)
+
+    })
+
+    // Append Marker to pickupMark[]
+    function addPickupMarker(coords, content, mapCenterLocation) {
+        if (!pickupMark.length == 0) {
+            pickupMark.forEach(m => {
                 m.setMap(null);
             })
         }
-
-        let marker = new google.maps.Marker();
-        marker.setPosition(coords)
-        marker.setMap(map)
         //map.setCenter(coords)
-        //marker.setIcon(icon)
+        let marker = new google.maps.Marker();
+        marker.setPosition(coords);
+        marker.setMap(map);
 
-        markers.push(marker)
+        marker.setIcon({
+            url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
+            scaledSize: new google.maps.Size(50, 50)
+        })
+
+        if (content) {
+            let infoWindow = new google.maps.InfoWindow();
+            infoWindow.setContent(content);
+            infoWindow.open(map, marker)
+        }
+        if (mapCenterLocation) {
+            map.setCenter(mapCenterLocation)
+        }
+        let lattitude = document.getElementById('lat');
+        let longitude = document.getElementById('lng');
+        lattitude.value = coords.lat;
+        longitude.value = coords.lng;
+
+        pickupMark.push(marker);
     }
 
 }

@@ -20,10 +20,12 @@ app.use(
 basicRouting = require("./viewsController");
 passengerSignup = require("./PassengerController/passengerSignup");
 passengerLogin = require("./PassengerController/passengerLogin");
+passengerMap = require("./PassengerController/passengerMap");
 
 app.use("/", basicRouting);
 app.use("/passengersignup", passengerSignup);
 app.use("/passengerlogin", passengerLogin);
+app.use('/passenger', passengerMap)
 
 //--------------------------------Driver Controller------------------
 

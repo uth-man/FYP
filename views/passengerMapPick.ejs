@@ -35,29 +35,35 @@
     <!---------------------Booking Details------------------>
 
     <div class="bookingDetails">
-      <div class="head"><h1>Where Can We Pick You Up?</h1></div>
-      <form action="" id="search_form">
+      <div class="head"><h1 id="heading">Add pick-up location</h1></div>
+      <form action="/passenger/coordinates" id="search_form" method="GET">
+        <input type="text" id="search" placeholder="Enter Pickup Location" />
         <input
-          type="text"
-          id="search"
+          type="hidden"
+          name="latitude"
+          id="lat"
           placeholder="Enter Pickup Location"
-        /><br />
-        <button>Proceed</button>
+        />
+        <input
+          type="hidden"
+          name="longitude"
+          id="lng"
+          placeholder="Enter Pickup Location"
+        />
+        <br />
+        <button id="proceed_button">Proceed</button>
       </form>
+
       <hr />
     </div>
     <!---------------------- Map ---------------------->
-    <div id="map" class="map"></div>
 
+    <div id="map" class="map"></div>
     <script
       async
       defer
       src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap&libraries=places"
     ></script>
-    <script src="/scripts/mapPassenger.js"></script>
-
-    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
-
-    <script src="/web-sockets/passengerSocket.js"></script>
+    <script src="/scripts/mapPassengerPickup.js"></script>
   </body>
 </html>

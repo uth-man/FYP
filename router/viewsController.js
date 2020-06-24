@@ -36,7 +36,7 @@ router.get("/passengerlogin", (req, res) => {
     req.session.user.category === "passenger"
   ) {
     console.log(req.session.user);
-    return res.render("passengerMap", { data: req.session.user });
+    return res.render("passengerMapPick", { data: req.session.user });
   } else {
     res.render("passengerLogin");
   }

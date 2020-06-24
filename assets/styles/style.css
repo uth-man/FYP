@@ -1416,6 +1416,7 @@ a {
   font-weight: 900;
   font-size: 50px;
   color: #08363b;
+  /* text-shadow: 4px 4px black; */
 }
 .driverReq h2 {
   text-align: center;

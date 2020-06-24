@@ -1,7 +1,10 @@
 const db = require("../../model/index");
 const bcryptjs = require("bcryptjs");
 const express = require("express");
+const { request } = require("../router");
 const router = express.Router();
+// const socket = require('../../serverSocket')
+
 
 
 router.post("/", async (req, res) => {
@@ -41,6 +44,16 @@ router.post("/", async (req, res) => {
 
             return res.render("driverPic", { data: req.session.user });
           } else {
+            console.log(req.session);
+
+            // Setting isOnline to true in DB
+            let sql = `UPDATE driver SET isOnline=true WHERE email='${req.session.email}' `;
+            db.query(sql, async (result, error) => {
+              if (error) {
+                console.log(error);
+              }
+            })
+            console.log(data);
             return res.render("driverMap", {
               data: data,
             });
@@ -55,6 +68,14 @@ router.post("/", async (req, res) => {
   });
 });
 router.get("/logout", (req, res) => {
+
+  // Setting isOnline to False in DB
+  let sql = `UPDATE driver SET isOnline=false WHERE email='${req.session.email}' `;
+  db.query(sql, async (result, error) => {
+    if (error) {
+      console.log(error);
+    }
+  })
   req.session.destroy();
   if (req.session === undefined) {
     console.log("destroyed");
@@ -62,4 +83,6 @@ router.get("/logout", (req, res) => {
 
   res.redirect("/driverlogin");
 });
-module.exports = router;
+
+module.exports = router
+
