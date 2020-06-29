@@ -1,4 +1,4 @@
-const db = require("../../model/index");
+const db = require("../../model/index").db;
 const express = require("express");
 const router = express.Router();
 

@@ -16,6 +16,9 @@
         </li>
         <li><a href="/admindashboard/driver" class="current">Driver</a></li>
         <li><a href="/admindashboard/requests">Driver Requests</a></li>
+        <li>
+          <a href="/admin" class="">Logout</a>
+        </li>
       </ul>
     </div>
     <div class="info">
@@ -27,8 +30,12 @@
         <li>Id : <%=result[i].id%></li>
         <li>Email : <%=result[i].email%></li>
         <li>phone No : <%=result[i].phone%></li>
+        <br />
         <a href="/admindashboard/blockDriver/<%=id%>">Block Driver</a>
+
+        <a href="#" id="edit-btn">Edit</a>
       </ul>
+      <hr />
       <%}%>
     </div>
   </body>

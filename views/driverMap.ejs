@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="/styles/mapPage.css" />
 
     <!---------------------------------------------->
-    <!-- socket -->
-    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
-    <script src="/web-sockets/driverSocket.js"></script>
 
     <link rel="stylesheet" href="/styles/mapPage.css" />
     <title>Driver</title>
@@ -37,6 +34,10 @@
     <!---------------------- Map ---------------------->
     <input type="hidden" id="_email" value="<%=data.email%>" />
     <div id="map" class="map"></div>
+
+    <!-- socket -->
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <!-- <script src="/web-sockets/driverSocket.js"></script> -->
 
     <script
       async

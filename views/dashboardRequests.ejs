@@ -18,6 +18,9 @@
         <li>
           <a href="/admindashboard/requests" class="current">Driver Requests</a>
         </li>
+        <li>
+          <a href="/admin" class="">Logout</a>
+        </li>
       </ul>
     </div>
     <div class="info">
@@ -30,7 +33,7 @@
         <li>Email : <%=result[i].email %></li>
         <li>Phone : <%=result[i].phone %></li>
         <li>IsVerified : <%=result[i].isVerified%></li>
-
+        <br />
         <a href="/admindashboard/verifydriver/<%=id%>">Verify</a>
       </ul>
 

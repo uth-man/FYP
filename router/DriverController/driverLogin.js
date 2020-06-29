@@ -1,10 +1,7 @@
-const db = require("../../model/index");
+const db = require("../../model/index").db;
 const bcryptjs = require("bcryptjs");
 const express = require("express");
-const { request } = require("../router");
 const router = express.Router();
-// const socket = require('../../serverSocket')
-
 
 
 router.post("/", async (req, res) => {
@@ -48,12 +45,11 @@ router.post("/", async (req, res) => {
 
             // Setting isOnline to true in DB
             let sql = `UPDATE driver SET isOnline=true WHERE email='${req.session.email}' `;
-            db.query(sql, async (result, error) => {
+            db.query(sql, async (error, result) => {
               if (error) {
                 console.log(error);
               }
             })
-            console.log(data);
             return res.render("driverMap", {
               data: data,
             });
@@ -67,22 +63,33 @@ router.post("/", async (req, res) => {
     }
   });
 });
-router.get("/logout", (req, res) => {
+router.get("/logout", setOffline, (req, res) => {
 
-  // Setting isOnline to False in DB
-  let sql = `UPDATE driver SET isOnline=false WHERE email='${req.session.email}' `;
-  db.query(sql, async (result, error) => {
+
+  req.session.destroy();
+  if (req.session === undefined) {
+    console.log("destroyed");
+    res.redirect("/driverlogin");
+  }
+
+
+
+});
+
+// Setting isOnline to False in DB
+
+function setOffline(req, res, next) {
+  let sql = `UPDATE driver SET isOnline=0 WHERE email='${req.session.email}' `;
+
+
+  db.query(sql, async (error, result) => {
     if (error) {
       console.log(error);
     }
   })
-  req.session.destroy();
-  if (req.session === undefined) {
-    console.log("destroyed");
-  }
 
-  res.redirect("/driverlogin");
-});
+  setTimeout(() => { next() }, 1000)
+}
 
 module.exports = router
 

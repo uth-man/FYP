@@ -1,12 +1,40 @@
-//const socket = io('http://localhost:8080')
+const socket = io('http://localhost:8080')
 let map;
 let markers = [];
 let initialCurrentLocation;
+
+let email = document.getElementById("_email").value;
+socket.emit('im_driver', email)
+
+socket.on("passenger_requests", (params) => {
+    console.log("User requested a ride");
+    console.log(params);
+
+
+})
+
 function initMap() {
+
+
+    let email = document.getElementById("_email").value;
+    socket.emit('im_driver', email)
+
+    socket.on("passenger_requests", (params) => {
+        console.log("User requested a ride");
+        let passengercoords = {
+            lat: parseFloat(params.coords.lat),
+            lng: parseFloat(params.coords.lng)
+        }
+
+
+        setPassengerMarker(passengercoords);
+    })
+
     navigator.geolocation.getCurrentPosition(p => {
         initialCurrentLocation = { lat: p.coords.latitude, lng: p.coords.longitude }
         map.setCenter(initialCurrentLocation)
     })
+
     setInterval(() => {
         if (navigator.geolocation) {
 
@@ -251,6 +279,13 @@ function initMap() {
         //marker.setIcon(icon)
 
         markers.push(marker)
+    }
+    function setPassengerMarker(coords) {
+        let marker = new google.maps.Marker();
+        marker.setPosition(coords);
+        marker.setMap(map)
+
+        // socket.emit('live_location_for_passenger', "live Location For Passenger")
     }
 
 }

@@ -1,4 +1,4 @@
-const db = require("../../model/index");
+const db = require("../../model/index").db;
 const bcryptjs = require("bcryptjs");
 const express = require("express");
 const multer = require("multer");
@@ -7,7 +7,7 @@ const router = express.Router();
 //---------------------------------setting Up Multer--------------------
 const storage = multer.diskStorage({
   destination: "assets/uploads",
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(
       null,
       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 10000000 },
-  fileFilter: function(req, file, cb) {
+  fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
   }
 }).single("pic");

@@ -1,47 +1,31 @@
+const socket = io('http://localhost:8080');
 let map;
-let pickupMark = [];
-
-socket.on('_passenger_pool_loc', params => {
-    //console.log(passCoords);
-    let marker = new google.maps.Marker();
-    marker.setPosition(params.coords);
-    marker.setMap(map);
-    let infoWindow = new google.maps.InfoWindow();
-    infoWindow.setContent(`${params.name}`);
-    infoWindow.open(map, marker)
-
-})
+let driverMark = []
+let passLat = parseFloat(document.getElementById('_lat').value);
+let passLng = parseFloat(document.getElementById('_lng').value);
 
 function initMap() {
+    console.log("Findride initiated...");
 
-    // Set Current Location on Map
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(p => {
-            let currentPosition = { lat: p.coords.latitude, lng: p.coords.longitude }
-            map.setCenter(currentPosition);
-            addPickupMarker(currentPosition, '<strong>pick-up point</strong>');
-            let latlng = p.coords.latitude + "," + p.coords.longitude;
+    let driverSocket = document.getElementById('driver_socket_id').value;
+    let passengerSocket = document.getElementById('passenger_socket_id').value;
+    // console.log("Driver Socket : " + driverSocket);
+    // console.log("passenger Socket : " + passengerSocket);
 
-            //get request to reverse Geocoding API
-            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-                params: {
-                    latlng: latlng,
-                    key: 'AIzaSyBuWZhosWcom_vVhXGyFwUidpmhPf9z7FA'
-                }
-            }).then((response) => {
-                let formattedAddress = response.data.results[0].formatted_address;
-                input.value = formattedAddress;
-            }).catch((err) => {
-                console.log(err);
-
-            });
-        })
-
+    let data = {
+        passenger: {
+            coords: {
+                lat: parseFloat(document.getElementById('_lat').value),
+                lng: parseFloat(document.getElementById('_lng').value)
+            },
+            socketId: passengerSocket
+        },
+        driver: { email: document.getElementById('driver_email').value, socketId: driverSocket }
     }
-    map = new google.maps.Map(document.getElementById("map"), {
+
+    let options = {
         zoom: 16,
         draggableCursor: "default",
-        disableDefaultUI: true,
         styles: [
             {
                 "elementType": "geometry",
@@ -64,6 +48,15 @@ function initMap() {
                 "stylers": [
                     {
                         "color": "#242f3e"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.land_parcel",
+                "elementType": "labels",
+                "stylers": [
+                    {
+                        "visibility": "off"
                     }
                 ]
             },
@@ -91,14 +84,6 @@ function initMap() {
                 "stylers": [
                     {
                         "color": "#d59563"
-                    }
-                ]
-            },
-            {
-                "featureType": "poi.business",
-                "stylers": [
-                    {
-                        "visibility": "off"
                     }
                 ]
             },
@@ -140,15 +125,6 @@ function initMap() {
             },
             {
                 "featureType": "road",
-                "elementType": "labels.icon",
-                "stylers": [
-                    {
-                        "visibility": "off"
-                    }
-                ]
-            },
-            {
-                "featureType": "road",
                 "elementType": "labels.text.fill",
                 "stylers": [
                     {
@@ -184,7 +160,8 @@ function initMap() {
                 ]
             },
             {
-                "featureType": "transit",
+                "featureType": "road.local",
+                "elementType": "labels",
                 "stylers": [
                     {
                         "visibility": "off"
@@ -237,102 +214,125 @@ function initMap() {
                 ]
             }
         ]
-    });
+    }
+    map = new google.maps.Map(document.getElementById('map'), options);
+    map.setCenter(data.passenger.coords)
+
+    addPassengerMarker(data.passenger.coords)
+
+    socket.emit('book_request', data);
+
+    socket.emit("_live_", data)
+
+    socket.on('_live_tracking', driverCoords => {
+        // console.log("Driver coordinated");
+        // console.log(driverCoords);
+
+        addDriverMarker(driverCoords)
+
+    })
 
 
-    // Onclick Marker
-    map.addListener('click', (e) => {
-        let coords = { lat: e.latLng.lat(), lng: e.latLng.lng() };
-        addPickupMarker(coords, 'pick-up point')
-        let latlng = e.latLng.lat() + "," + e.latLng.lng()
 
-        //get request to reverse Geocoding API
-        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-            params: {
-                latlng: latlng,
-                key: 'AIzaSyBuWZhosWcom_vVhXGyFwUidpmhPf9z7FA'
+    // ----------------------------------------- Open Pool --------------------------------
+
+
+    let openPool = document.getElementById('open_pool');
+    openPool.addEventListener("click", (e) => {
+        openPool.style.display = "none";
+        let email = document.getElementById('passenger_email').value
+
+        socket.emit("_open_pool", email)
+        let time = 180;
+        let countDown = document.getElementById('count-down');
+        let startInterval = setInterval(updateTime, 1000)
+
+        function updateTime() {
+            countDown.style.display = 'block'
+            countDown.innerHTML = time;
+            time--;
+            if (time < -1) {
+                clearInterval(startInterval)
+                countDown.style.display = 'none'
             }
-        }).then((response) => {
-            let formattedAddress = response.data.results[0].formatted_address;
-            input.value = formattedAddress;
-        }).catch((err) => {
-            console.log(err);
+        }
 
+    })
+
+    socket.on('_pooling_results', params => {
+        console.log(params);
+
+        // add carpool markers
+        let marker = new google.maps.Marker({
+            position: {
+                lat: parseFloat(params.coords.lat),
+                lng: parseFloat(params.coords.lng)
+            }
         });
+        marker.setMap(map)
+        marker.setIcon({
+            url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
+            scaledSize: new google.maps.Size(50, 50)
+        })
+        let infoWindow = new google.maps.InfoWindow();
+        infoWindow.setContent(`<h2">${params.name}</h2>`)
+        infoWindow.open(map, marker)
+        let passengerLocation = {
+            lat: passLat,
+            lng: passLng
+        }
+        let name = document.getElementById('user_name').innerText
+        let parameters = {
+            name: name,
+            coords: passengerLocation
+        }
+        socket.emit("_passenger_locations", parameters)
+
+
 
     })
 
-    // Form
-    let form = document.getElementById('search_form');
 
-    // Search bar auto-complete using &libraries=places in url
-    let input = document.getElementById('search');
-
-    // using places API
-    new google.maps.places.SearchBox(input);
+    // ------------------------------------------ Markers ---------------------------------
 
 
-    input.addEventListener('change', (e) => {
-        e.preventDefault();
-
-        setTimeout(() => {
-            console.log(input.value);
-            //get request to Geocoding API
-            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-                params: {
-                    address: input.value,
-                    key: 'AIzaSyBuWZhosWcom_vVhXGyFwUidpmhPf9z7FA'
-                }
 
 
-            }).then((response) => {
-                console.log(response.data.results[0].formatted_address);
-
-                let formattedAddress = response.data.results[0].formatted_address;
-                let coords = response.data.results[0].geometry.location;
-
-                input.value = formattedAddress;
-                addPickupMarker(coords, '<strong>pick-up point</strong>', coords)
-
-            }).catch((err) => {
-                console.log(err);
-
-            });
-        }, 1000)
-
-    })
-
-    // Append Marker to pickupMark[]
-    function addPickupMarker(coords, content, mapCenterLocation) {
-        if (!pickupMark.length == 0) {
-            pickupMark.forEach(m => {
-                m.setMap(null);
+    function addDriverMarker(coords) {
+        if (!driverMark.length == 0) {
+            driverMark.forEach(m => {
+                m.setMap(null)
             })
         }
-        //map.setCenter(coords)
         let marker = new google.maps.Marker();
         marker.setPosition(coords);
         marker.setMap(map);
+        // marker.setIcon({
+        //     url: "https://img.icons8.com/color/48/000000/car-top-view.png"
+        // })
 
+        let infoWindow = new google.maps.InfoWindow();
+        infoWindow.setContent("Driver")
+        infoWindow.open(map, marker)
+
+        driverMark.push(marker)
+    }
+
+    function addPassengerMarker(coords) {
+        // console.log("passenger location : ");
+        // console.log(coords);
+
+        let marker = new google.maps.Marker();
+        marker.setPosition(coords);
+        marker.setMap(map);
         marker.setIcon({
             url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
             scaledSize: new google.maps.Size(50, 50)
         })
 
-        if (content) {
-            let infoWindow = new google.maps.InfoWindow();
-            infoWindow.setContent(content);
-            infoWindow.open(map, marker)
-        }
-        if (mapCenterLocation) {
-            map.setCenter(mapCenterLocation)
-        }
-        let lattitude = document.getElementById('lat');
-        let longitude = document.getElementById('lng');
-        lattitude.value = coords.lat;
-        longitude.value = coords.lng;
-
-        pickupMark.push(marker);
+        let infoWindow = new google.maps.InfoWindow();
+        infoWindow.setContent("Passenger")
+        infoWindow.open(map, marker)
     }
-
 }
+

@@ -1,4 +1,3 @@
-
 let map;
 let pickupMarker;
 let allDropoffMarkers = [];

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Find Driver</title>
+    <!-- <meta http-equiv="x-ua-compatible" content="IE=edge" /> -->
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Inter|Sen&display=swap"
+      rel="stylesheet"
+    />
+
+    <!----------------Map Dependencies-------------->
+
+    <link rel="stylesheet" href="/styles/mapPage.css" />
+
+    <!-- Axios -->
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+      #count-down {
+        float: left;
+        margin-left: 50%;
+        margin-top: -7px;
+        border: 1px solid black;
+        border-radius: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color: white;
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <h1 id="count-down"></h1>
+
+      <span id="schedule"><a href="#" id="open_pool">Open Pool</a></span>
+      <span class="dropdown"
+        ><a href="#" id="user_name"><%= data.name%></a>
+        <div class="dropdown-content">
+          <ul>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Schedule Ride</a></li>
+            <li><a href="#">Notifications</a></li>
+            <li><a href="#">Notifications</a></li>
+            <li><a href="/passengerlogin/logout">LogOut</a></li>
+          </ul>
+        </div>
+      </span>
+    </div>
+    <!---->
+
+    <!---------------------Booking Details------------------>
+
+    <div class="bookingDetails">
+      <div class="head"><h1 id="heading">Your ride is on its way</h1></div>
+      <form action="#" id="search_form" method="GET">
+        <!-- driver email -->
+        <input type="hidden" id="driver_email" value="<%=driver.email%>" />
+        <!-- passenger coordinates -->
+        <input
+          type="hidden"
+          id="_lat"
+          value="<%=data.coordinates.origin.lat%>"
+        />
+        <input
+          type="hidden"
+          id="_lng"
+          value="<%=data.coordinates.origin.lng%>"
+        />
+        <!-- driver socket -->
+        <input
+          type="hidden"
+          id="driver_socket_id"
+          value="<%=driver.socketId%>"
+        />
+        <input type="hidden" id="passenger_email" value="<%=data.email%>" />
+        <!-- passenger socket -->
+        <input
+          type="hidden"
+          id="passenger_socket_id"
+          value="<%=data.user.passengerSocketId%>"
+        />
+
+        <h2><%=driver.name%></h2>
+        <img
+          src="<%=driver.picture%>"
+          alt=""
+          style="
+            width: 100px;
+            height: 100px;
+            border: 2px solid #105b63;
+            border-radius: 100%;
+          "
+        />
+
+        <p>license Plate No. <%=driver.licensePlate%></p>
+        <h2><%=driver.distance.text%> | <%=driver.time.text%></h2>
+
+        <button id="" type="submit">Cancel Ride</button>
+      </form>
+      <hr />
+      <p><%=driver.phone%></p>
+
+      <div id="estimatedValues"></div>
+    </div>
+
+    <!-------------------------- Socket ---------------------->
+
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+
+    <!-- <script src="/web-sockets/passengerSocket.js"></script> -->
+
+    <!------------------------ Map -------------------------->
+
+    <div id="map" class="map"></div>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=<%=data.user.key%>&callback=initMap&libraries=places"
+    ></script>
+    <script src="/scripts/findRide.js"></script>
+  </body>
+</html>

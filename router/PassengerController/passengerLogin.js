@@ -1,7 +1,6 @@
-const db = require("../../model/index");
+const db = require("../../model/index").db;
 const bcryptjs = require("bcryptjs");
 const express = require("express");
-const app = express();
 const router = express.Router();
 
 router.post("/watching", async (req, res) => {
@@ -30,7 +29,7 @@ router.post("/watching", async (req, res) => {
             key: process.env.MAP_KEY,
           };
           req.session.user = data;
-          //console.log(req.session);
+          console.log(req.session);
 
           if (req.session === undefined) {
             res.render("passengerLogin", { error: "Try Logging In Again" });
@@ -50,6 +49,13 @@ router.post("/watching", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
+  let sql = `UPDATE TABLE bookingdetails SET isPool=true, status='matching' WHERE passengerEmail='${req.session.email}'`
+  db.query(sql, (error, result) => {
+    if (error) {
+      console.log(error);
+    }
+  })
+
   req.session.destroy();
   if (req.session === undefined) {
     console.log("session destroyed");

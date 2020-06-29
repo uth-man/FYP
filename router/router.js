@@ -17,15 +17,21 @@ app.use(
 
 //--------------------------------Passenger Controller------------------
 
-basicRouting = require("./viewsController");
-passengerSignup = require("./PassengerController/passengerSignup");
-passengerLogin = require("./PassengerController/passengerLogin");
-passengerMap = require("./PassengerController/passengerMap");
+let basicRouting = require("./viewsController");
+let passengerSignup = require("./PassengerController/passengerSignup");
+let passengerLogin = require("./PassengerController/passengerLogin");
+let passengerMap = require("./PassengerController/passengerMap");
+let scheduleRide = require('./PassengerController/scheduleRide')
+let carpool = require('./PassengerController/carpool')
+let allScheduleRides = require('./PassengerController/allScheduledRides')
 
 app.use("/", basicRouting);
 app.use("/passengersignup", passengerSignup);
 app.use("/passengerlogin", passengerLogin);
 app.use('/passenger', passengerMap)
+app.use('/passenger', scheduleRide)
+app.use('/passenger/schedule', allScheduleRides)
+//app.use('/passenger', carpool)
 
 //--------------------------------Driver Controller------------------
 

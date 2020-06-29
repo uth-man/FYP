@@ -16,14 +16,21 @@
 
   <body>
     <div class="header">
-      <span id="schedule"><a href="#">Schedule Ride</a></span>
+      <span id="schedule"
+        ><a href="/passenger/scheduleRide">Schedule Ride</a></span
+      >
       <span class="dropdown"
-        ><a href="#"><%= data.name%></a>
+        ><a href="#" id="pass_name"><%= data.name%></a>
+        <input type="hidden" id="pass_email" value="<%=data.email%>" />
         <div class="dropdown-content">
           <ul>
             <li><a href="#">Profile</a></li>
-            <li><a href="#">Schedule Ride</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li>
+              <a href="/passenger/schedule/all-schedules-rides"
+                >Scheduled Ride</a
+              >
+            </li>
+            <li><a href="#" id="_carpool">Carpool</a></li>
             <li><a href="#">Notifications</a></li>
             <li><a href="/passengerlogin/logout">LogOut</a></li>
           </ul>
@@ -38,24 +45,19 @@
       <div class="head"><h1 id="heading">Add pick-up location</h1></div>
       <form action="/passenger/coordinates" id="search_form" method="GET">
         <input type="text" id="search" placeholder="Enter Pickup Location" />
-        <input
-          type="hidden"
-          name="latitude"
-          id="lat"
-          placeholder="Enter Pickup Location"
-        />
-        <input
-          type="hidden"
-          name="longitude"
-          id="lng"
-          placeholder="Enter Pickup Location"
-        />
+        <input type="hidden" name="latitude" id="lat" />
+        <input type="hidden" name="longitude" id="lng" />
         <br />
         <button id="proceed_button">Proceed</button>
       </form>
 
       <hr />
     </div>
+    <!-------------------------- Socket ---------------------->
+
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+
+    <script src="/web-sockets/passengerSocket.js"></script>
     <!---------------------- Map ---------------------->
 
     <div id="map" class="map"></div>
@@ -65,5 +67,6 @@
       src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap&libraries=places"
     ></script>
     <script src="/scripts/mapPassengerPickup.js"></script>
+    <script src="/scripts/carpool.js"></script>
   </body>
 </html>
