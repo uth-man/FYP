@@ -3,8 +3,9 @@ const bcryptjs = require("bcryptjs");
 const express = require("express");
 const router = express.Router();
 
+const createDriverTable = require("../../model/index").createDriverTable;
 
-router.post("/", async (req, res) => {
+router.post("/", createDriverTable, async (req, res) => {
   let sql = "SELECT * FROM driver";
   db.query(sql, async (err, result) => {
     if (err) {
@@ -65,14 +66,11 @@ router.post("/", async (req, res) => {
 });
 router.get("/logout", setOffline, (req, res) => {
 
-
   req.session.destroy();
   if (req.session === undefined) {
     console.log("destroyed");
     res.redirect("/driverlogin");
   }
-
-
 
 });
 

@@ -3,7 +3,9 @@ const bcryptjs = require("bcryptjs");
 const express = require("express");
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+const createDriverTable = require("../../model/index").createDriverTable;
+
+router.post("/", createDriverTable, async (req, res) => {
   let drivers = "SELECT * FROM driver";
   db.query(drivers, async (err, result) => {
     if (err) {

@@ -3,7 +3,9 @@ const bcryptjs = require("bcryptjs");
 const express = require("express");
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+const createPassengerTable = require("../../model/index").createPassengerTable
+
+router.post("/", createPassengerTable, async (req, res) => {
   let valid = `SELECT email FROM passenger`;
   db.query(valid, async (err, result) => {
     if (err) {

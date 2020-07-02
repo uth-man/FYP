@@ -3,7 +3,9 @@ const bcryptjs = require("bcryptjs");
 const express = require("express");
 const router = express.Router();
 
-router.post("/watching", async (req, res) => {
+const createPassengerTable = require("../../model/index").createPassengerTable
+
+router.post("/watching", createPassengerTable, async (req, res) => {
   let sql = "SELECT * FROM passenger";
   db.query(sql, async (err, result) => {
     if (err) {
@@ -49,7 +51,7 @@ router.post("/watching", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  let sql = `UPDATE TABLE bookingdetails SET isPool=true, status='matching' WHERE passengerEmail='${req.session.email}'`
+  let sql = `UPDATE bookingdetails SET isPool=0, status='booked' WHERE passengerEmail='${req.session.email}'`
   db.query(sql, (error, result) => {
     if (error) {
       console.log(error);
