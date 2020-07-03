@@ -25,7 +25,18 @@ let scheduleRide = require('./PassengerController/scheduleRide')
 let carpool = require('./PassengerController/carpool')
 let allScheduleRides = require('./PassengerController/allScheduledRides')
 
+
+// ---------------------------- APIS -----------------------
+let apis = require('./apis')
+app.use('/api', apis)
+
+//-------------------------------- Basic Routing ------------------
+
+
 app.use("/", basicRouting);
+
+//--------------------------------Passenger Controller------------------
+
 app.use("/passengersignup", passengerSignup);
 app.use("/passengerlogin", passengerLogin);
 app.use('/passenger', passengerMap)
