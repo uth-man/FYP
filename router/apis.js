@@ -3,8 +3,15 @@ const bcryptjs = require("bcryptjs");
 const express = require("express");
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.json({ fyp: "findMyBuddyRider" })
+router.get('/passengers', (req, res) => {
+    let sql = "SELECT * FROM passenger";
+    db.query(sql, (error, result) => {
+        if (erorr) {
+            res.json(error)
+        } else {
+            res.json(result)
+        }
+    })
 })
 
 module.exports = router
