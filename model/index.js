@@ -14,15 +14,15 @@ const db = mysql.createConnection({
   database: "findmybuddyrider"
 });
 
-creatingConnection();
+createConnection();
 
-function creatingConnection() {
+function createConnection() {
   db.connect(err => {
     if (err) {
       console.log("*******Error while connecting to Database******** ");
       console.log(err);
 
-      //  creatingConnection();
+      createConnection();
     } else {
       console.log("MySQL Connected");
     }
