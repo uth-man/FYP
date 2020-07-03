@@ -5,16 +5,29 @@ const db = mysql.createConnection({
   user: "bf4808090a525d",
   password: "5d20a066",
   database: "heroku_4a12729e85039f6"
+
+  // For Development
+
+  // host: "localhost",
+  // user: "root",
+  // password: "",
+  // database: "findmybuddyrider"
 });
 
-db.connect(err => {
-  if (err) {
-    throw err;
-  } else {
-    console.log("MySQL Connected");
-  }
-});
+creatingConnection();
 
+function creatingConnection() {
+  db.connect(err => {
+    if (err) {
+      console.log("*******Error while connecting to Database******** ");
+      console.log(err);
+
+      creatingConnection();
+    } else {
+      console.log("MySQL Connected");
+    }
+  });
+}
 function createScheduleRides(req, res, next) {
   console.log("Creating ScheduleRides");
 
