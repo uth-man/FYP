@@ -1,17 +1,17 @@
 const mysql = require("mysql");
 
 const db = mysql.createConnection({
-  // host: "us-cdbr-east-02.cleardb.com",
-  // user: "bf4808090a525d",
-  // password: "5d20a066",
-  // database: "heroku_4a12729e85039f6"
+  host: "us-cdbr-east-02.cleardb.com",
+  user: "bf4808090a525d",
+  password: "5d20a066",
+  database: "heroku_4a12729e85039f6"
 
   // For Development
 
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "findmybuddyrider"
+  // host: "localhost",
+  // user: "root",
+  // password: "",
+  // database: "findmybuddyrider"
 });
 
 createConnection();
