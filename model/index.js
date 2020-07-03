@@ -1,20 +1,43 @@
 const mysql = require("mysql");
 
-const db = mysql.createConnection({
+let db_config = {
   host: "us-cdbr-east-02.cleardb.com",
   user: "bf4808090a525d",
   password: "5d20a066",
   database: "heroku_4a12729e85039f6"
 
   // For Development
-
   // host: "localhost",
   // user: "root",
   // password: "",
   // database: "findmybuddyrider"
-});
+}
 
-createConnection();
+let db;
+
+
+function handleDisconnect() {
+
+  db = mysql.createConnection(db_config);
+  db.connect(function (err) {
+    if (err) {
+      console.log("Error when connecting to database : ", err);
+      setTimeout(handleDisconnect, 2000)
+    }
+  })
+  db.on('error', function (err) {
+    console.log("db error : ", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  })
+}
+handleDisconnect();
+
+
+//createConnection();
 
 function createConnection() {
   db.connect(err => {
