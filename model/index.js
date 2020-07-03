@@ -39,24 +39,44 @@ handleDisconnect();
 
 //createConnection();
 
-function createConnection() {
-  db.connect(err => {
-    if (err) {
-      console.log("*******Error while connecting to Database******** ");
-      console.log(err);
+// function createConnection() {
+//   db.connect(err => {
+//     if (err) {
+//       console.log("*******Error while connecting to Database******** ");
+//       console.log(err);
 
-      createConnection();
-    } else {
-      console.log("MySQL Connected");
-    }
-  });
-}
+//       createConnection();
+//     } else {
+//       console.log("MySQL Connected");
+//     }
+//   });
+// }
 
 creatingAllTables();
 
 // Creating Tables
 
 function creatingAllTables() {
+  // Admin Table
+
+  let sqlAdmin =
+    "CREATE TABLE IF NOT EXISTS admin (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,name varchar(255),email varchar(255),password varchar(255) )"
+  db.query(sqlAdmin, (error, result) => {
+    if (error) {
+      console.log(error);
+
+    } else {
+      console.log("Table Admin created");
+      let sqlInsertAdmin =
+        "INSERT INTO admin (name,email,password) VALUES('Usman','usmansardar247@gmail.com','Usman123')"
+      db.query(sqlInsertAdmin, (error, result) => {
+        if (error) {
+          console.log(error);
+
+        }
+      })
+    }
+  })
 
   // Scheduled Rides
   let sqlSchedileRides =
