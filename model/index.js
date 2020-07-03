@@ -28,6 +28,14 @@ function creatingConnection() {
     }
   });
 }
+
+// Creating Tables
+
+createPassengerTable()
+createDriverTable()
+createScheduleRides()
+createTableBookingDetails()
+
 function createScheduleRides(req, res, next) {
   console.log("Creating ScheduleRides");
 
