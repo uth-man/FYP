@@ -1,8 +1,7 @@
 const db = require('./model/index').db
 
-const app = require('express')();
-let http = require('http').createServer(app)
-const io = require('socket.io')(http);
+let server = require('./router/router')
+const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
 
