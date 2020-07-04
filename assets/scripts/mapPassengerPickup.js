@@ -2,7 +2,7 @@ let map;
 let pickupMark = [];
 
 socket.on('_passenger_pool_loc', params => {
-    //console.log(passCoords);
+
     let marker = new google.maps.Marker();
     marker.setPosition(params.coords);
     marker.setMap(map);

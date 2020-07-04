@@ -1,4 +1,7 @@
-const socket = io('http://localhost:8080')
+const socket = io.connect('https://findmybuddyrider.herokuapp.com')
+
+console.log(window.location.hostname);
+
 
 let email = document.getElementById("pass_email").value;
 
