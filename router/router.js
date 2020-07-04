@@ -1,5 +1,7 @@
-const express = require("express");
-const app = express();
+const app = require("express")();
+let http = require('http').Server(app);
+let io = require("socket.io")(http)
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.set("view engine", "ejs");
@@ -58,4 +60,4 @@ app.use("/providing", driverPic);
 adminLogin = require("./AdminController/adminLogin");
 app.use("/admindashboard", adminLogin);
 
-module.exports = app;
+module.exports = { app: app, io: io };
