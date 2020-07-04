@@ -1,5 +1,5 @@
 console.log(window.location.hostname);
-let socket = io.connect()
+let socket = io.connect("https://findmybuddyrider.herokuapp.com")
 
 let email = document.getElementById("pass_email").value;
 
