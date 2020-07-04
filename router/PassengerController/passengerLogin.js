@@ -9,7 +9,8 @@ router.post("/watching", createPassengerTable, async (req, res) => {
   let sql = "SELECT * FROM passenger";
   db.query(sql, async (err, result) => {
     if (err) {
-      throw err;
+      console.log(err);
+
     } else {
       let data;
       for (let i = 0; i < result.length; i++) {
