@@ -1,11 +1,5 @@
-const db = require('./model/index').db;
-
-let express = require('express')
-let app = express();
-
-let http = require('http').Server(app)
-
-const io = require('socket.io')(http);
+const db = require('./model/index').db
+const io = require('socket.io')(8080);
 io.on('connection', (socket) => {
 
     socket.on('im_driver', (email) => {
