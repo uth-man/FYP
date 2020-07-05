@@ -13,31 +13,25 @@ let db_config = {
   // database: "findmybuddyrider"
 }
 
-let db = mysql.createConnection(db_config);
-db.connect(function (err) {
-  if (err) {
-    console.log("Error when connecting to database : ", err);
-  }
-})
+let db;
+
+function createConnection() {
+  db = mysql.createConnection(db_config);
+
+  db.connect(err => {
+    if (err) {
+      console.log("*******Error while connecting to Database******** ");
+      console.log(err);
+      createConnection();
+    } else {
+      console.log("MySQL Connected");
+    }
+  });
+}
+createConnection();
 
 
 
-
-
-//createConnection();
-
-// function createConnection() {
-//   db.connect(err => {
-//     if (err) {
-//       console.log("*******Error while connecting to Database******** ");
-//       console.log(err);
-
-//       createConnection();
-//     } else {
-//       console.log("MySQL Connected");
-//     }
-//   });
-// }
 
 creatingAllTables();
 
