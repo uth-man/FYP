@@ -13,28 +13,15 @@ let db_config = {
   // database: "findmybuddyrider"
 }
 
-let db;
+let db = mysql.createConnection(db_config);
+db.connect(function (err) {
+  if (err) {
+    console.log("Error when connecting to database : ", err);
+  }
+})
 
 
-function handleDisconnect() {
 
-  db = mysql.createConnection(db_config);
-  db.connect(function (err) {
-    if (err) {
-      console.log("Error when connecting to database : ", err);
-      setTimeout(handleDisconnect, 2000)
-    }
-  })
-  db.on('error', function (err) {
-    console.log("db error : ", err);
-    if (err.code === "PROTOCOL_CONNECTION_LOST") {
-      handleDisconnect();
-    } else {
-      throw err;
-    }
-  })
-}
-handleDisconnect();
 
 
 //createConnection();

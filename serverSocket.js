@@ -1,13 +1,5 @@
 const db = require('./model/index').db
-// let http = require('http');
-// let express = require('express');
-// let app = express();
-// let server = http.createServer(app);
-// let io = require('socket.io').listen(server);
-// // server.listen(process.env.PORT);
-
-let io = require('./router/router').io;
-
+const io = require('socket.io')(8080);
 io.on('connection', (socket) => {
 
     socket.on('im_driver', (email) => {
