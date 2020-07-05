@@ -31,11 +31,8 @@ function createConnection() {
 createConnection();
 
 
-
-
-creatingAllTables();
-
 // Creating Tables
+creatingAllTables();
 
 function creatingAllTables() {
   // Admin Table
