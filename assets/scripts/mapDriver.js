@@ -1,4 +1,4 @@
-const socket = io('http://localhost:8080')
+const socket = io.connect();
 let map;
 let markers = [];
 let initialCurrentLocation;

@@ -1,34 +1,34 @@
 const mysql = require("mysql");
 
 let db_config = {
-  host: "us-cdbr-east-02.cleardb.com",
-  user: "bf4808090a525d",
-  password: "5d20a066",
-  database: "heroku_4a12729e85039f6"
+  // host: "us-cdbr-east-02.cleardb.com",
+  // user: "bf4808090a525d",
+  // password: "5d20a066",
+  // database: "heroku_4a12729e85039f6"
 
   // For Development
-  // host: "localhost",
-  // user: "root",
-  // password: "",
-  // database: "findmybuddyrider"
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "findmybuddyrider"
 }
 
 let db;
 
-function createConnection() {
+function handleDisconnect() {
   db = mysql.createConnection(db_config);
 
   db.connect(err => {
     if (err) {
       console.log("*******Error while connecting to Database******** ");
       console.log(err);
-      createConnection();
+      setTimeout(handleDisconnect, 3000)
     } else {
       console.log("MySQL Connected");
     }
   });
 }
-createConnection();
+handleDisconnect();
 
 
 // Creating Tables

@@ -5,31 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Admin</title>
-    <link href="styles/admin.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
   </head>
-  <body>
-    <h1 class="adminHeading">Admin Login</h1>
-    <h4><%=error%></h4>
-    <form action="/admindashboard" method="POST" class="adminForm">
-      <label for="name">Name : </label>
-      <input type="text" name="name" id="name" required /><br />
-      <label for="email">Email : </label>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        required
-        pattern=".+@gmail.com"
-        size="30"
-      /><br />
-      <label for="password">Password :</label>
-
-      <input type="password" name="password" id="password" required /><br />
-      <button type="submit" class="fa fa-sign-in"></button>
-    </form>
+  <body class="bg-light">
+    <div class="container">
+      <h1 class="text-info text-center mt-5">Admin Pannel</h1>
+      <div class="container w-50">
+        <h4 class="text-danger w-50 m-auto p-2">
+          <%=error%>
+        </h4>
+      </div>
+      <div class="container w-50 mt-5">
+        <form action="/admindashboard" method="POST">
+          <div class="form-group">
+            <label for="name">Name : </label>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              id="name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email : </label>
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="email"
+              name="email"
+              id="email"
+              required
+              pattern=".+@gmail.com"
+              size="30"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password :</label>
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="password"
+              name="password"
+              id="password"
+              required
+            /><br />
+          </div>
+          <button
+            type="submit"
+            class="fa fa-sign-in btn btn-info px-5 py-3 float-right"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

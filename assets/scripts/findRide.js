@@ -1,4 +1,4 @@
-const socket = io('http://localhost:8080');
+const socket = io.connect();
 let map;
 let driverMark = []
 let passLat = parseFloat(document.getElementById('_lat').value);
