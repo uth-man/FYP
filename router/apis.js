@@ -4,33 +4,6 @@ const express = require("express");
 const router = express.Router();
 
 
-// ------------------------------- All Passengers 
-router.get('/passengers', (req, res) => {
-    let sql = "SELECT * FROM passenger";
-    db.query(sql, (error, result) => {
-        if (error) {
-            res.status(502).json(error)
-        } else {
-            res.status(200).json(result)
-        }
-    })
-})
-
-// ------------------------------- Passenger search by id
-
-router.get('/passengers/:id', (req, res) => {
-    let sql = `SELECT * FROM passenger WHERE id=${req.params.id}`;
-    db.query(sql, (error, result) => {
-        if (error) {
-            res.status(502).json(error)
-        } else {
-            res.status(200).json(result)
-        }
-    })
-})
-
-
-
 // ---------------------------------- All Drivers -----------------------
 
 router.get('/drivers', (req, res) => {
@@ -57,7 +30,56 @@ router.get('/drivers/:id', (req, res) => {
     })
 })
 
-// ======================== POSTS REQUESTS ============================
+// ------------------------------- Update Driver -------------------------------
+
+
+router.post('/drivers/update/:id', (req, res) => {
+    let sql = `UPDATE driver
+    SET name='${req.body.name}', email='${req.body.email}',
+    phone='${req.body.phone}',cnic='${req.body.cnic}',
+    drivingLicense='${req.body.drivingLicense}',gender='${req.body.gender}',
+    vehicleEngine='${req.body.vehicleEngine}',vehicleModel='${req.body.vehicleModel}',
+    licensePlate='${req.body.licensePlate}',vehicleClass='${req.body.vehicleClass}',
+    vehicleType='${req.body.vehicleType}'
+    WHERE id=${req.params.id}`
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            res.status(400).json({ error: { message: "Icorrect information" } })
+        } else {
+            res.status(200).json({ message: "Data updated!" })
+        }
+    })
+
+})
+
+
+// ------------------------------- All Passengers -------------------------------
+
+router.get('/passengers', (req, res) => {
+    let sql = "SELECT * FROM passenger";
+    db.query(sql, (error, result) => {
+        if (error) {
+            res.status(502).json(error)
+        } else {
+            res.status(200).json(result)
+        }
+    })
+})
+
+// ------------------------------- Passenger search by id -------------------------------
+
+router.get('/passengers/:id', (req, res) => {
+    let sql = `SELECT * FROM passenger WHERE id=${req.params.id}`;
+    db.query(sql, (error, result) => {
+        if (error) {
+            res.status(502).json(error)
+        } else {
+            res.status(200).json(result)
+        }
+    })
+})
+
 
 
 // ------------------------- Register Passenger ----------------------

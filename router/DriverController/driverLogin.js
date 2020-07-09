@@ -45,7 +45,7 @@ router.post("/", createDriverTable, async (req, res) => {
             console.log(req.session);
 
             // Setting isOnline to true in DB
-            let sql = `UPDATE driver SET isOnline=true WHERE email='${req.session.email}' `;
+            let sql = `UPDATE driver SET isOnline=1 WHERE email='${req.session.email}' `;
             db.query(sql, async (error, result) => {
               if (error) {
                 console.log(error);
@@ -74,19 +74,23 @@ router.get("/logout", setOffline, (req, res) => {
 
 });
 
-// Setting isOnline to False in DB
+// Setting isOnline for driver to False in DB
 
 function setOffline(req, res, next) {
   let sql = `UPDATE driver SET isOnline=0 WHERE email='${req.session.email}' `;
 
+  console.log("Driver is set offline");
 
   db.query(sql, async (error, result) => {
     if (error) {
       console.log(error);
     }
+    else {
+      next()
+    }
   })
 
-  setTimeout(() => { next() }, 1000)
+
 }
 
 module.exports = router

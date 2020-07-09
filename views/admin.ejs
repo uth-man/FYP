@@ -18,15 +18,17 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
   </head>
-  <body class="bg-light">
-    <div class="container">
-      <h1 class="text-info text-center mt-5">Admin Pannel</h1>
+  <body>
+    <div class="container-fluid">
+      <div class="jumbotron text-info bg-dark">
+        <h1 class="text-center display-3 p-0 m-0">Admin Pannel</h1>
+      </div>
       <div class="container w-50">
         <h4 class="text-danger w-50 m-auto p-2">
           <%=error%>
         </h4>
       </div>
-      <div class="container w-50 mt-5">
+      <div class="container w-50 mt-2">
         <form action="/admindashboard" method="POST">
           <div class="form-group">
             <label for="name">Name : </label>
@@ -68,7 +70,7 @@
           </div>
           <button
             type="submit"
-            class="fa fa-sign-in btn btn-info px-5 py-3 float-right"
+            class="fa fa-sign-in btn btn-info px-4 py-2 float-right"
           >
             Login
           </button>

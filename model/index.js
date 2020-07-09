@@ -1,16 +1,16 @@
 const mysql = require("mysql");
 
 let db_config = {
-  host: "us-cdbr-east-02.cleardb.com",
-  user: "bf4808090a525d",
-  password: "5d20a066",
-  database: "heroku_4a12729e85039f6"
+  // host: "us-cdbr-east-02.cleardb.com",
+  // user: "bf4808090a525d",
+  // password: "5d20a066",
+  // database: "heroku_4a12729e85039f6"
 
   // For Development
-  // host: "localhost",
-  // user: "root",
-  // password: "",
-  // database: "findmybuddyrider"
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "findmybuddyrider"
 }
 
 let db;
@@ -58,7 +58,7 @@ function creatingAllTables() {
 
   // Scheduled Rides
   let sqlSchedileRides =
-    "CREATE TABLE IF NOT EXISTS ScheduledRides (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,role varchar(255), name varchar(255),phone varchar(255),email varchar(255),numberOfPassengers varchar(255) ,origion VARCHAR(100),destination VARCHAR(100), pickDate DATE ,pickTime TIME, timeStamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
+    "CREATE TABLE IF NOT EXISTS ScheduledRides (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,role varchar(255), name varchar(255),phone varchar(255),email varchar(255),numberOfPassengers int(100) ,origion VARCHAR(100),destination VARCHAR(100), pickDate DATE ,pickTime TIME, timeStamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
   db.query(sqlSchedileRides, (err, result) => {
     if (err) {
       console.log(err);
@@ -113,7 +113,7 @@ function createScheduleRides(req, res, next) {
   console.log("Creating ScheduleRides");
 
   let sql =
-    "CREATE TABLE IF NOT EXISTS ScheduledRides (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,role varchar(255), name varchar(255),phone varchar(255),email varchar(255),numberOfPassengers varchar(255) ,origion VARCHAR(100),destination VARCHAR(100), pickDate DATE ,pickTime TIME, timeStamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
+    "CREATE TABLE IF NOT EXISTS ScheduledRides (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,role varchar(255), name varchar(255),phone varchar(255),email varchar(255),numberOfPassengers int(100) ,origion VARCHAR(100),destination VARCHAR(100), pickDate DATE ,pickTime TIME, timeStamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
   db.query(sql, (err, result) => {
     if (err) {
       console.log(err);

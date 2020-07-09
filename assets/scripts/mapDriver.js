@@ -6,29 +6,72 @@ let initialCurrentLocation;
 let email = document.getElementById("_email").value;
 socket.emit('im_driver', email)
 
+
+
+
+function flashMessage(info) {
+    let msgContainer = document.getElementById('pool_request_box');
+    let msg = document.getElementById('req_message');
+
+    msgContainer.style.display = "block"
+    msg.innerHTML = `<b>${info.name}</b> Just Booked Ride With You..`;
+
+    setTimeout(() => {
+        msgContainer.style.display = "none";
+    }, 5000);
+}
+
+
+
 socket.on("passenger_requests", (params) => {
+
+    flashMessage(params.info)
+
     console.log("User requested a ride");
     console.log(params);
+    let info = {
+        name: params.info.name,
+        phone: params.info.phone
+    }
+    let passengercoords = {
+        lat: parseFloat(params.coords.lat),
+        lng: parseFloat(params.coords.lng)
+    }
 
+    setPassengerMarker(passengercoords, info);
+
+    let parameters = {
+        passengerSocket: params.socketId,
+        driverEmail: email
+    }
+    console.log("Passenger Socket Id : " + params.socketId);
+
+    socket.emit('driver_response', parameters)
 
 })
 
+socket.on('_pooling_results_for_driver', params => {
+    let coords = {
+        lat: parseFloat(params.coords.lat),
+        lng: parseFloat(params.coords.lng)
+    }
+
+    setPassengerMarker(coords, params)
+})
+
 function initMap() {
+    // let email = document.getElementById("_email").value;
+    // socket.emit('im_driver', email)
 
-
-    let email = document.getElementById("_email").value;
-    socket.emit('im_driver', email)
-
-    socket.on("passenger_requests", (params) => {
-        console.log("User requested a ride");
-        let passengercoords = {
-            lat: parseFloat(params.coords.lat),
-            lng: parseFloat(params.coords.lng)
-        }
-
-
-        setPassengerMarker(passengercoords);
-    })
+    // socket.on("passenger_requests", (params) => {
+    //     console.log("User requested a ride");
+    //     console.log(params);
+    //     let passengercoords = {
+    //         lat: parseFloat(params.coords.lat),
+    //         lng: parseFloat(params.coords.lng)
+    //     }
+    //     setPassengerMarker(passengercoords);
+    // })
 
     navigator.geolocation.getCurrentPosition(p => {
         initialCurrentLocation = { lat: p.coords.latitude, lng: p.coords.longitude }
@@ -280,12 +323,16 @@ function initMap() {
 
         markers.push(marker)
     }
-    function setPassengerMarker(coords) {
-        let marker = new google.maps.Marker();
-        marker.setPosition(coords);
-        marker.setMap(map)
 
-        // socket.emit('live_location_for_passenger', "live Location For Passenger")
-    }
 
+}
+function setPassengerMarker(coords, info) {
+    let marker = new google.maps.Marker();
+    marker.setPosition(coords);
+    marker.setMap(map)
+    let infoWindow = new google.maps.InfoWindow();
+    infoWindow.setContent(`<b>${info.name}</b><br/> ${info.phone}`)
+    infoWindow.open(map, marker)
+
+    // socket.emit('live_location_for_passenger', "live Location For Passenger")
 }

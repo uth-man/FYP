@@ -4,28 +4,115 @@ let driverMark = []
 let passLat = parseFloat(document.getElementById('_lat').value);
 let passLng = parseFloat(document.getElementById('_lng').value);
 
-function initMap() {
-    console.log("Findride initiated...");
 
-    let driverSocket = document.getElementById('driver_socket_id').value;
-    let passengerSocket = document.getElementById('passenger_socket_id').value;
-    // console.log("Driver Socket : " + driverSocket);
-    // console.log("passenger Socket : " + passengerSocket);
+console.log("Findride initiated...");
 
-    let data = {
-        passenger: {
-            coords: {
-                lat: parseFloat(document.getElementById('_lat').value),
-                lng: parseFloat(document.getElementById('_lng').value)
-            },
-            socketId: passengerSocket
+let driverSocket = document.getElementById('driver_socket_id').value;
+let passengerSocket = document.getElementById('passenger_socket_id').value;
+
+let passengerName = document.getElementById("_p_name").value;
+let passengerPhone = document.getElementById('_p_phone').value;
+
+let data = {
+    passenger: {
+        info: {
+            name: passengerName,
+            phone: passengerPhone,
+            email: document.getElementById('passenger_email').value
         },
-        driver: { email: document.getElementById('driver_email').value, socketId: driverSocket }
+        coords: {
+            lat: parseFloat(document.getElementById('_lat').value),
+            lng: parseFloat(document.getElementById('_lng').value)
+        },
+        socketId: passengerSocket
+    },
+    driver: { email: document.getElementById('driver_email').value, socketId: driverSocket }
+}
+
+socket.emit('book_request', data);
+
+socket.on('_live_tracking', driverCoords => {
+
+    addDriverMarker(driverCoords)
+
+})
+
+
+socket.on('_pooling_results', params => {
+    console.log(params);
+
+    // add carpool markers
+    let marker = new google.maps.Marker({
+        position: {
+            lat: parseFloat(params.coords.lat),
+            lng: parseFloat(params.coords.lng)
+        }
+    });
+    marker.setMap(map)
+    // marker.setIcon({
+    //     url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
+    //     scaledSize: new google.maps.Size(50, 50)
+    // })
+
+    let passengerLocation = {
+        lat: passLat,
+        lng: passLng
     }
+    let name = document.getElementById('user_name').innerText
+    let parameters = {
+        name: name,
+        phone: passengerPhone,
+        coords: passengerLocation
+    }
+    // accept pool request
+
+    let poolBox = document.getElementById('pool_request_box');
+    let msgElem = document.getElementById('req_message');
+    let acceptBtn = document.getElementById('accept_pool');
+
+    poolBox.style.display = "block";
+    msgElem.innerHTML = `${params.name} sent pool request`
+    acceptBtn.addEventListener('click', (e) => {
+        socket.emit("_passenger_locations", parameters);
+        poolBox.style.display = "none";
+
+        let marker1 = new google.maps.Marker({
+            position: {
+                lat: parseFloat(params.coords.lat),
+                lng: parseFloat(params.coords.lng)
+            }
+        });
+        marker1.setMap(map)
+        let infoWindow = new google.maps.InfoWindow();
+        infoWindow.setContent(`<b>${params.name}</b><br/>${params.phone}`)
+        infoWindow.open(map, marker1)
+
+    })
+
+    let rejectBtn = document.getElementById('reject_pool');
+    rejectBtn = addEventListener('click', (e) => {
+        poolBox.style.display = "none";
+        marker.setMap(null)
+    })
+
+})
+
+
+// ===================== Canceling Ride
+
+// let cancelForm = document.getElementById('search_form')
+// cancelForm.onsubmit(() => {
+
+// })
+
+
+
+function initMap() {
 
     let options = {
         zoom: 16,
         draggableCursor: "default",
+        disableDefaultUI: true,
         styles: [
             {
                 "elementType": "geometry",
@@ -214,24 +301,12 @@ function initMap() {
                 ]
             }
         ]
+
     }
     map = new google.maps.Map(document.getElementById('map'), options);
     map.setCenter(data.passenger.coords)
 
     addPassengerMarker(data.passenger.coords)
-
-    socket.emit('book_request', data);
-
-    socket.emit("_live_", data)
-
-    socket.on('_live_tracking', driverCoords => {
-        // console.log("Driver coordinated");
-        // console.log(driverCoords);
-
-        addDriverMarker(driverCoords)
-
-    })
-
 
 
     // ----------------------------------------- Open Pool --------------------------------
@@ -259,80 +334,46 @@ function initMap() {
 
     })
 
-    socket.on('_pooling_results', params => {
-        console.log(params);
 
-        // add carpool markers
-        let marker = new google.maps.Marker({
-            position: {
-                lat: parseFloat(params.coords.lat),
-                lng: parseFloat(params.coords.lng)
-            }
-        });
-        marker.setMap(map)
-        marker.setIcon({
-            url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
-            scaledSize: new google.maps.Size(50, 50)
-        })
-        let infoWindow = new google.maps.InfoWindow();
-        infoWindow.setContent(`<h2">${params.name}</h2>`)
-        infoWindow.open(map, marker)
-        let passengerLocation = {
-            lat: passLat,
-            lng: passLng
-        }
-        let name = document.getElementById('user_name').innerText
-        let parameters = {
-            name: name,
-            coords: passengerLocation
-        }
-        socket.emit("_passenger_locations", parameters)
-
-
-
-    })
-
-
-    // ------------------------------------------ Markers ---------------------------------
-
-
-
-
-    function addDriverMarker(coords) {
-        if (!driverMark.length == 0) {
-            driverMark.forEach(m => {
-                m.setMap(null)
-            })
-        }
-        let marker = new google.maps.Marker();
-        marker.setPosition(coords);
-        marker.setMap(map);
-        // marker.setIcon({
-        //     url: "https://img.icons8.com/color/48/000000/car-top-view.png"
-        // })
-
-        let infoWindow = new google.maps.InfoWindow();
-        infoWindow.setContent("Driver")
-        infoWindow.open(map, marker)
-
-        driverMark.push(marker)
-    }
-
-    function addPassengerMarker(coords) {
-        // console.log("passenger location : ");
-        // console.log(coords);
-
-        let marker = new google.maps.Marker();
-        marker.setPosition(coords);
-        marker.setMap(map);
-        marker.setIcon({
-            url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
-            scaledSize: new google.maps.Size(50, 50)
-        })
-
-        let infoWindow = new google.maps.InfoWindow();
-        infoWindow.setContent("Passenger")
-        infoWindow.open(map, marker)
-    }
 }
+// ------------------------------------------ Markers ---------------------------------
+
+
+function addDriverMarker(coords) {
+    if (!driverMark.length == 0) {
+        driverMark.forEach(m => {
+            m.setMap(null)
+        })
+    }
+    let marker = new google.maps.Marker();
+    marker.setPosition(coords);
+    marker.setMap(map);
+    // marker.setIcon({
+    //     url: "https://img.icons8.com/color/48/000000/car-top-view.png"
+    // })
+
+    let infoWindow = new google.maps.InfoWindow();
+    infoWindow.setContent("Driver")
+    infoWindow.open(map, marker)
+
+    driverMark.push(marker)
+}
+
+function addPassengerMarker(coords) {
+    // console.log("passenger location : ");
+    // console.log(coords);
+
+    let marker = new google.maps.Marker();
+    marker.setPosition(coords);
+    marker.setMap(map);
+    // marker.setIcon({
+    //     url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
+    //     scaledSize: new google.maps.Size(50, 50)
+    // })
+
+    let infoWindow = new google.maps.InfoWindow();
+    infoWindow.setContent("Passenger")
+    infoWindow.open(map, marker)
+}
+
 

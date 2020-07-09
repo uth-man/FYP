@@ -7,7 +7,7 @@ socket.on('_passenger_pool_loc', params => {
     marker.setPosition(params.coords);
     marker.setMap(map);
     let infoWindow = new google.maps.InfoWindow();
-    infoWindow.setContent(`${params.name}`);
+    infoWindow.setContent(`<b>${params.name}</b><br/>${params.phone}`);
     infoWindow.open(map, marker)
 
 })
@@ -314,10 +314,10 @@ function initMap() {
         marker.setPosition(coords);
         marker.setMap(map);
 
-        marker.setIcon({
-            url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
-            scaledSize: new google.maps.Size(50, 50)
-        })
+        // marker.setIcon({
+        //     url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
+        //     scaledSize: new google.maps.Size(50, 50)
+        // })
 
         if (content) {
             let infoWindow = new google.maps.InfoWindow();

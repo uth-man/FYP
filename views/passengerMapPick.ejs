@@ -17,18 +17,18 @@
   <body>
     <div class="header">
       <span id="schedule"
-        ><a href="/passenger/scheduleRide">Schedule Ride</a></span
+        ><a href="/schedule/scheduleRide">Schedule Ride</a></span
       >
       <span class="dropdown"
         ><a href="#" id="pass_name"><%= data.name%></a>
         <input type="hidden" id="pass_email" value="<%=data.email%>" />
+        <input type="hidden" id="pass_phone" value="<%=data.phone%>" />
+
         <div class="dropdown-content">
           <ul>
             <li><a href="#">Profile</a></li>
             <li>
-              <a href="/passenger/schedule/all-schedules-rides"
-                >Scheduled Ride</a
-              >
+              <a href="/schedule/all-scheduled-rides">Scheduled Ride</a>
             </li>
             <li><a href="#" id="_carpool">Carpool</a></li>
             <li><a href="#">Notifications</a></li>

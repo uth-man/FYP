@@ -4,32 +4,95 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Passenger | Dashboard</title>
-    <link rel="stylesheet" href="/styles/adminDashboard.css" />
+    <title>Admin | Dashboard</title>
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <h1>Passenger (<%=result.length%>)</h1>
-    <div class="leftBody">
-      <ul class="users">
-        <li>
-          <a href="/admindashboard/passenger" class="current">Passenger</a>
-        </li>
-        <li><a href="/admindashboard/driver">Driver</a></li>
-        <li><a href="/admindashboard/requests">Driver Requests</a></li>
-        <li>
-          <a href="/admin" class="">Logout</a>
-        </li>
-      </ul>
+    <!-- ========================================= -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/adminDashboard/home"
+        ><h2 class="display-4">Admin</h2></a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link text-info" href="/admindashboard/passenger"
+              >Passengers <span class="sr-only"></span
+            ></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/admindashboard/driver"
+              >Drivers</a
+            >
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/admindashboard/requests"
+              >Driver Requests</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/admindashboard/bookingdetails"
+              >Rides</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/admin">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container text-center text-dark">
+      <h1>Passengers (<%=result.length%>)</h1>
     </div>
-    <div class="info">
-      <%for(let i = 0 ; i< result.length; i++){%>
-      <ul>
-        <h2><%=result[i].name%></h2>
-        <li>Id : <%=result[i].id%></li>
-        <li>Email : <%=result[i].email%></li>
-        <li>phone No : <%=result[i].phone%></li>
-      </ul>
-      <%}%>
+    <div class="container">
+      <table class="table table-dark table-hover text-center">
+        <thead class="text-info">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Num</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%for(let i = 0 ; i< result.length; i++){%>
+          <tr>
+            <th scope="row"><%=result[i].id%></th>
+            <td><%=result[i].name%></td>
+            <td><%=result[i].email%></td>
+            <td><%=result[i].phone%></td>
+            <td>
+              <a
+                href="edituser/with/id/<%=result[i].id%>"
+                class="btn btn-sm btn-outline-warning px-3"
+                >Update</a
+              >
+            </td>
+          </tr>
+          <%}%>
+        </tbody>
+      </table>
     </div>
   </body>
 </html>

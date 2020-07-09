@@ -22,10 +22,8 @@ let basicRouting = require("./viewsController");
 let passengerSignup = require("./PassengerController/passengerSignup");
 let passengerLogin = require("./PassengerController/passengerLogin");
 let passengerMap = require("./PassengerController/passengerMap");
-let scheduleRide = require('./PassengerController/scheduleRide')
-let carpool = require('./PassengerController/carpool')
-let allScheduleRides = require('./PassengerController/allScheduledRides')
 
+let schedule = require('./ScheduleRideController/schedule')
 
 // ---------------------------- APIS -----------------------
 let apis = require('./apis')
@@ -41,9 +39,10 @@ app.use("/", basicRouting);
 app.use("/passengersignup", passengerSignup);
 app.use("/passengerlogin", passengerLogin);
 app.use('/passenger', passengerMap)
-app.use('/passenger', scheduleRide)
-app.use('/passenger/schedule', allScheduleRides)
-//app.use('/passenger', carpool)
+
+//--------------------------------Schedule Ride Controller------------------
+
+app.use('/schedule', schedule)
 
 //--------------------------------Driver Controller------------------
 

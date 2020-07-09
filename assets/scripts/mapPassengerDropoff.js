@@ -9,6 +9,8 @@ let pickLng = document.getElementById('pickLng').value
 // lat lng of dropoff location
 let dropLat = document.getElementById('dropLat');
 let dropLng = document.getElementById('dropLng');
+
+
 function initMap() {
 
     // adding pick up point

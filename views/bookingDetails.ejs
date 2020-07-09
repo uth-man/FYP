@@ -27,17 +27,9 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
-
-    <style>
-      .charts {
-        width: 50%;
-        height: 50%;
-      }
-    </style>
   </head>
   <body>
-    <!-- ========================================= -->
-
+    
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#"
         ><h2 class="display-4 text-info">Welcome</h2></a
@@ -72,7 +64,7 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light" href="/admindashboard/bookingdetails"
+            <a class="nav-link text-info" href="/admindashboard/bookingdetails"
               >Rides</a
             >
           </li>
@@ -84,22 +76,47 @@
     </nav>
 
     <!-- ========================================= -->
-    <div class="container mt-5 charts">
-      <h1 class="m-5 text-center display-4">
-        NUMBER OF RIDES PER MONTH (2020)
-      </h1>
-      <canvas id="myChart-bar" class=""></canvas>
+    <div class="contianer-fluid m-2">
+        <h1 class="text-center">Booking Details</h1>
+        <br>
+        <table class="table table-dark table-hover text-center">
+            <thead class="text-info">
+                <tr>
+                    <th>ID</th>
+                    <th>Passenger Name</th>
+                    <th>Passenger Email</th>
+                    <th>Passenger Phone</th>
+                    <th>Driver Name</th>
+                    <th>Driver Email</th>
+                    <th>Origion</th>
+                    <th>Destination</th>
+                    <th>No. of Passengers</th>
+                    <th>IsPool</th>
+                    <th>Status</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+        
+            <tbody>
+      
+                <%for (let i=0; i<result.length; i++){%>
+                <tr>
+                <td><%=result[i].id%></td>
+                <td><%=result[i].passengerName%></td>
+                <td><%=result[i].passengerEmail%></td>
+                <td><%=result[i].passengerPhone%></td>
+                <td><%=result[i].driverName%></td>
+                <td><%=result[i].driverEmail%></td>
+                <td><%=result[i].origion%></td>
+                <td><%=result[i].destination%></td>
+                <td><%=result[i].passengers%></td>
+                <td><%=result[i].isPool%></td>
+                <td><%=result[i].status%></td>
+                <td><%=result[i].timeStamp%></td>
+                </tr>
+                <%}%>
+            </tbody>
+        </table>
     </div>
-    <br /><br />
-    <div class="container mt-5 charts">
-      <h1 class="m-5 text-center display-4">
-        TRAFFIC PER MONTH (2020)
-      </h1>
-      <canvas id="myChart-line" class=""></canvas>
-    </div>
-    <!-- Chart.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-
-    <script src="/scripts/adminCharts.js"></script>
   </body>
 </html>

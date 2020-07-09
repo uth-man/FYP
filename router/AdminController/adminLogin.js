@@ -2,11 +2,16 @@ const db = require("../../model/index").db;
 const express = require("express");
 const router = express.Router();
 
+router.get('/home', (req, res) => {
+  res.render("adminDashboard")
+})
+
 router.post("/", (req, res) => {
   let sql = "SELECT * FROM admin";
   db.query(sql, (err, result) => {
     if (err) {
-      throw err;
+      return console.log(err);
+
     } else {
       let data;
       for (let i = 0; i < result.length; i++) {
@@ -20,12 +25,12 @@ router.post("/", (req, res) => {
             email: result[i].email,
             password: result[i].password
           };
-          res.render("adminDashboard", { name: result[i].name });
+          return res.render("adminDashboard", { name: result[i].name });
         }
       }
       if (data == null) {
         let error = "Error : Wrong Admin Details";
-        res.render("admin", { error: error });
+        return res.render("admin", { error: error });
       }
     }
   });
@@ -35,9 +40,10 @@ router.get("/passenger", (req, res) => {
   let sql = "SELECT * FROM passenger";
   db.query(sql, (err, result) => {
     if (err) {
-      throw err;
+      return console.log(err);
+
     } else {
-      res.render("dashboardPassenger", { result: result });
+      return res.render("dashboardPassenger", { result: result });
     }
   });
 });
@@ -46,9 +52,10 @@ router.get("/driver", (req, res) => {
   let sql = "SELECT * FROM driver WHERE isVerified = true";
   db.query(sql, (err, result) => {
     if (err) {
-      throw err;
+      return console.log(err);
+
     } else {
-      res.render("dashboardDriver", { result: result });
+      return res.render("dashboardDriver", { result: result });
     }
   });
 });
@@ -56,8 +63,9 @@ router.get("/driver", (req, res) => {
 router.get("/requests", (req, res) => {
   let sql = "SELECT * FROM driver WHERE isVerified = false";
   db.query(sql, (err, result) => {
-    if (err) throw err;
-    res.render("dashboardRequests", { result: result });
+    if (err) { return console.log(err); }
+
+    return res.render("dashboardRequests", { result: result });
   });
 });
 
@@ -94,5 +102,30 @@ router.get("/blockDriver/:id", (req, res) => {
     }
   });
 });
+
+router.get("/updateDriver/:id", (req, res) => {
+  // res.json(req.params.id)
+  let sql = `SELECT * FROM driver WHERE id=${req.params.id}`
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+
+    } else {
+      res.render('updateDrivers', { result: result[0] })
+    }
+  })
+})
+
+router.get('/bookingdetails', (req, res) => {
+  let sql = "SELECT * FROM bookingdetails";
+  db.query(sql, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    else {
+      res.status(200).render("bookingDetails", { result: result })
+    }
+  })
+})
 
 module.exports = router;

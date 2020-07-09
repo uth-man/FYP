@@ -19,14 +19,16 @@
   </head>
   <body>
     <div class="header">
-      <span id="schedule"><a href="#">Book Ride</a></span>
-      <span id="schedule"><a href="#">My Schedules</a></span>
+      <span id="schedule"><a href="/schedule/backtobooking">Book Ride</a></span>
+      <span id="schedule"
+        ><a href="/schedule/myschedule/<%=data.email%>">My Schedules</a></span
+      >
       <span class="dropdown"
         ><a href="#"><%= data.name%></a>
         <div class="dropdown-content">
           <ul>
             <li><a href="#">Profile</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="#">Carpool</a></li>
             <li><a href="#">Notifications</a></li>
             <li><a href="/passengerlogin/logout">LogOut</a></li>
           </ul>
@@ -39,7 +41,7 @@
         <div class="container w-50">
           <h1 class="text-center">Schedule Ride</h1>
           <br />
-          <form action="/passenger/saveSchedule" method="POST">
+          <form action="/schedule/saveSchedule" method="POST">
             <div class="form-group">
               <div class="form-group">
                 <label for=""></label>
@@ -97,7 +99,7 @@
               />
             </div>
             <div class="form-group">
-              <label for="">Number of Passenger(s)</label>
+              <label for="">Number of Traveler(s)</label>
             </div>
             <div class="form-group">
               <input

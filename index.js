@@ -59,11 +59,18 @@ io.on('connection', (socket) => {
     socket.broadcast.to(params.driver.socketId).emit('passenger_requests', params.passenger)
 
   })
-  socket.on('_live_', (params) => {
+  socket.on('driver_response', (params) => {
+
+    let updateIsOnline = `UPDATE driver SET isOnline=0 WHERE email='${params.driverEmail}'`;
+    db.query(updateIsOnline, (err, result) => {
+      if (err) {
+        console.log(err)
+      }
+    })
 
     setInterval(() => {
 
-      let sql = `SELECT currentLocation FROM driver WHERE email='${params.driver.email}'`
+      let sql = `SELECT currentLocation FROM driver WHERE email='${params.driverEmail}'`
       db.query(sql, (error, result) => {
         if (error) {
           console.log(error);
@@ -108,8 +115,10 @@ io.on('connection', (socket) => {
           console.log(error);
         } else {
           console.log("________________CARPOOL___________");
-          if (result[0].isPool == true) {
-            socket.broadcast.emit("_pooling_results", params)
+          if (result.length > 0) {
+            socket.broadcast.emit("_pooling_results", params);
+
+            socket.broadcast.emit('_pooling_results_for_driver', params)
           }
 
         }
@@ -119,7 +128,19 @@ io.on('connection', (socket) => {
   socket.on('_passenger_locations', params => {
     socket.broadcast.emit('_passenger_pool_loc', params)
   })
+
+
+  // ----------------------- Cancel Ride
+
+  // socket.on('_cancel_ride', data => {
+  //   console.log("==============================");
+  //   console.log("Canceling ride");
+  //   console.log("==============================");
+
+  // })
 })
+
+
 
 
 app.use(router)
@@ -127,3 +148,4 @@ app.use(router)
 server.listen(port, () => {
   console.log(`Listening on port ${port}..`);
 });
+module.exports

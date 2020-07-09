@@ -8,6 +8,30 @@ let passengerSocketId;
 
 var distance = require('google-distance-matrix');
 
+
+router.post('/cancel-ride', (req, res) => {
+    let sql = `UPDATE bookingdetails SET status='cancelled'
+    WHERE passengerEmail='${req.body.passengerEmail}'
+    AND driverEmail='${req.body.driveEmail}'`;
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            return console.log(err)
+        } else {
+            let setDriverOffline = `UPDATE driver SET isOnline=1 WHERE email='${req.body.driverEmail}'`;
+            db.query(setDriverOffline, (err1, result1) => {
+                if (err1) {
+                    console.log(err1);
+                } else {
+                    return res.render('passengerMapPick', { data: req.session.user })
+
+                }
+            })
+
+        }
+    })
+})
+
 router.get('/coordinates', (req, res) => {
 
     let sql = `SELECT socketId from passenger where email='${req.session.email}'`;
