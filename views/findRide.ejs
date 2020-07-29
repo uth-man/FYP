@@ -87,8 +87,8 @@
           value="<%=driver.email%>"
         />
         <!-- passenger info -->
-        <input type="hidden" id="_p_name" value="<%=data.user.name%>" />
-        <input type="hidden" id="_p_phone" value="<%=data.user.phone%>" />
+        <input type="hidden" id="_p_name" value="<%=data.name%>" />
+        <input type="hidden" id="_p_phone" value="<%=data.phone%>" />
         <!-- passenger coordinates -->
         <input
           type="hidden"
@@ -112,14 +112,21 @@
           id="passenger_email"
           value="<%=data.email%>"
         />
-        <!-- passenger socket -->
+
+        <!-- booking id -->
         <input
           type="hidden"
-          name="passengerSocket"
-          id="passenger_socket_id"
-          value="<%=data.user.passengerSocketId%>"
+          name="bookingId"
+          id="booking_id"
+          value="<%=data.bookingId%>"
         />
-
+        <!-- Table Name -->
+        <input
+          type="hidden"
+          name="tableName"
+          id="table_name"
+          value="<%=data.tableName%>"
+        />
         <h2><%=driver.name%></h2>
         <img
           src="<%=driver.picture%>"
@@ -155,7 +162,7 @@
     <script
       async
       defer
-      src="https://maps.googleapis.com/maps/api/js?key=<%=data.user.key%>&callback=initMap&libraries=places"
+      src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap&libraries=places"
     ></script>
     <script src="/scripts/findRide.js"></script>
   </body>

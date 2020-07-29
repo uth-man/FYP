@@ -16,8 +16,12 @@
 
   <body>
     <div class="header">
+      <span id="schedule"><a href="/passenger/casualride">Casual Ride</a></span>
+      <span id="schedule"><a href="/passenger/buddyride">Buddy Ride</a></span>
       <span id="schedule"
-        ><a href="/schedule/scheduleRide">Schedule Ride</a></span
+        ><a href="/schedule/passenger/all-scheduled-rides"
+          >Scheduled Ride</a
+        ></span
       >
       <span class="dropdown"
         ><a href="#" id="pass_name"><%= data.name%></a>
@@ -41,23 +45,10 @@
 
     <!---------------------Booking Details------------------>
 
-    <div class="bookingDetails">
-      <div class="head"><h1 id="heading">Add pick-up location</h1></div>
-      <form action="/passenger/coordinates" id="search_form" method="GET">
-        <input type="text" id="search" placeholder="Enter Pickup Location" />
-        <input type="hidden" name="latitude" id="lat" />
-        <input type="hidden" name="longitude" id="lng" />
-        <br />
-        <button id="proceed_button">Proceed</button>
-      </form>
-
-      <hr />
-    </div>
     <!-------------------------- Socket ---------------------->
 
     <script src="/socket.io/socket.io.js"></script>
 
-    <script src="/web-sockets/passengerSocket.js"></script>
     <!---------------------- Map ---------------------->
 
     <div id="map" class="map"></div>
@@ -66,7 +57,6 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap&libraries=places"
     ></script>
-    <script src="/scripts/mapPassengerPickup.js"></script>
-    <script src="/scripts/carpool.js"></script>
+    <script src="/scripts/passengerStartMap.js"></script>
   </body>
 </html>

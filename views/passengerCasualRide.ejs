@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Passenger</title>
+    <!-- <meta http-equiv="x-ua-compatible" content="IE=edge" /> -->
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Inter|Sen&display=swap"
+      rel="stylesheet"
+    />
+    <!----------------Map Dependencies-------------->
+    <link rel="stylesheet" href="/styles/mapPage.css" />
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <div class="header">
+      <span id="schedule"
+        ><a href="/passenger/casualride" style="color: #e49002;"
+          >Casual Ride</a
+        ></span
+      >
+      <span id="schedule"><a href="/passenger/buddyride">Buddy Ride</a></span>
+      <span id="schedule"
+        ><a href="/schedule/all-scheduled-rides">Scheduled Ride</a></span
+      >
+      <span class="dropdown"
+        ><a href="#" id="pass_name"><%= data.name%></a>
+        <input type="hidden" id="pass_email" value="<%=data.email%>" />
+        <input type="hidden" id="pass_phone" value="<%=data.phone%>" />
+
+        <div class="dropdown-content">
+          <ul>
+            <li><a href="#">Profile</a></li>
+            <li>
+              <a href="/schedule/all-scheduled-rides">Scheduled Ride</a>
+            </li>
+            <li><a href="#" id="_carpool">Carpool</a></li>
+            <li><a href="#">Notifications</a></li>
+            <li><a href="/passengerlogin/logout">LogOut</a></li>
+          </ul>
+        </div>
+      </span>
+    </div>
+    <!---->
+
+    <!---------------------Booking Details------------------>
+
+    <div class="bookingDetails">
+      <div class="head"><h1 id="heading">Add pick-up location</h1></div>
+      <form
+        action="/passenger/casualride/coordinates"
+        id="search_form"
+        method="GET"
+      >
+        <input type="text" id="search" placeholder="Enter Pickup Location" />
+        <input type="hidden" name="latitude" id="lat" />
+        <input type="hidden" name="longitude" id="lng" />
+        <br />
+        <button id="proceed_button">Proceed</button>
+      </form>
+
+      <hr />
+    </div>
+    <!-------------------------- Socket ---------------------->
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!--  <script src="/web-sockets/passengerSocket.js"></script> -->
+    <!---------------------- Map ---------------------->
+
+    <div id="map" class="map"></div>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap&libraries=places"
+    ></script>
+    <script src="/scripts/mapPassengerPickup.js"></script>
+    <script src="/scripts/carpool.js"></script>
+  </body>
+</html>

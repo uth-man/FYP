@@ -16,31 +16,43 @@ app.use(
   })
 );
 
-//--------------------------------Passenger Controller------------------
 
-let basicRouting = require("./viewsController");
-let passengerSignup = require("./PassengerController/passengerSignup");
-let passengerLogin = require("./PassengerController/passengerLogin");
-let passengerMap = require("./PassengerController/passengerMap");
+// Home
+app.get('/passengerhome', (req, res) => {
+  res.render('passengerMap', { data: req.session.user })
+})
 
-let schedule = require('./ScheduleRideController/schedule')
+
+app.get('/driverhome', (req, res) => {
+  res.render('driverMap', { data: req.session.driver })
+})
 
 // ---------------------------- APIS -----------------------
+
 let apis = require('./apis')
 app.use('/api', apis)
 
 //-------------------------------- Basic Routing ------------------
 
+let basicRouting = require("./viewsController");
 
 app.use("/", basicRouting);
 
 //--------------------------------Passenger Controller------------------
 
+let passengerSignup = require("./PassengerController/passengerSignup");
+let passengerLogin = require("./PassengerController/passengerLogin");
+let passengerMap = require("./PassengerController/passengerMap");
+
+
 app.use("/passengersignup", passengerSignup);
 app.use("/passengerlogin", passengerLogin);
-app.use('/passenger', passengerMap)
+app.use('/passenger', passengerMap);
+
 
 //--------------------------------Schedule Ride Controller------------------
+
+let schedule = require('./ScheduleRideController/schedule')
 
 app.use('/schedule', schedule)
 

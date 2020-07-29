@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Schedules</title>
+    <title>Scheduled Rides</title>
     <link
       href="https://fonts.googleapis.com/css?family=Inter|Sen&display=swap"
       rel="stylesheet"
@@ -19,11 +19,8 @@
   </head>
   <body>
     <div class="header">
-      <span id="schedule"><a href="/driverhome">Home</a></span>
+      <span id="schedule"><a href="/passengerhome">Home</a></span>
 
-      <span id="schedule"
-        ><a href="/schedule/scheduleRide">Set Schedule</a></span
-      >
       <span class="dropdown"
         ><a href="#" id="pass_name"><%= data.name%></a>
         <input type="hidden" id="pass_email" value="<%=data.email%>" />
@@ -38,8 +35,28 @@
       </span>
     </div>
     <div class="m-5">
-      <h1 class="text-center text-dark">My Schedules</h1>
-
+      <h1 class="text-center text-dark">Find Schedules</h1>
+      <div class="container w-25">
+          <form action="/schedule/findschedule" method="GET">
+        <input
+          type="text"
+          name="origion"
+          id="_origion"
+          class="form-control m-auto"
+          placeholder="Add Origion.."
+        />
+            <input
+          type="text"
+          name="destination"
+          id="_destination"
+          class="form-control m-auto"
+          placeholder="Add Destination.."
+            /><br />
+            <button type="submit" class="btn btn-success w-100">Find</button>
+        </div>
+        
+        </form>
+      <br />
       <table class="table table-bordered table-dark text-center">
         <thead class="text-light">
           <tr>
@@ -56,23 +73,24 @@
           </tr>
         </thead>
         <tbody>
-          <% for(let i=0; i< result.length; i++){ %>
+          <% for(let i=0; i< rides.length; i++){ %>
           <tr>
-            <td scope="row" class="text-info"><%=result[i].id%></td>
-            <td><%=result[i].name%></td>
-            <td><%=result[i].phone%></td>
-            <td><%=result[i].email%></td>
-            <td><%=result[i].origion%></td>
-            <td><%=result[i].destination%></td>
-            <td><%=result[i].pickDate%></td>
-            <td><%=result[i].pickTime%></td>
+            <td scope="row" class="text-info"><%=rides[i].id%></td>
+            <td><%=rides[i].name%></td>
+            <td><%=rides[i].phone%></td>
+            <td><%=rides[i].email%></td>
+            <td><%=rides[i].origion%></td>
+            <td><%=rides[i].destination%></td>
+            <td><%=rides[i].pickDate%></td>
+            <td><%=rides[i].pickTime%></td>
 
-            <td><%= 4 - result[i].numberOfPassengers%></td>
+            <td><%= 4 - rides[i].numberOfPassengers%></td>
             <td>
               <a
-                href="/schedule/delete/<%=result[i].id%>"
-                class="btn btn-danger"
-                >Delete Schedule</a
+                href="/schedule/addpassenger/<%=rides[i].id%>"
+                class="btn"
+                style="background-color: #105b63; color: white;"
+                >Request Pool</a
               >
             </td>
           </tr>

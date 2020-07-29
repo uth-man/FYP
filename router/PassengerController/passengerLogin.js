@@ -37,8 +37,8 @@ router.post("/watching", createPassengerTable, async (req, res) => {
           if (req.session === undefined) {
             res.render("passengerLogin", { error: "Try Logging In Again" });
           } else {
-            res.render("passengerMapPick", {
-              data: data,
+            res.render("passengerMap", {
+              data: req.session.user,
             });
           }
         }
@@ -52,7 +52,7 @@ router.post("/watching", createPassengerTable, async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  let sql = `UPDATE bookingdetails SET isPool=0, status='booked' WHERE passengerEmail='${req.session.email}'`
+  let sql = `UPDATE bookingdetails SET isPool=0, status='booked' WHERE passengerEmail='${req.session.user.email}'`
   db.query(sql, (error, result) => {
     if (error) {
       console.log(error);

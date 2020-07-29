@@ -8,25 +8,35 @@ let passLng = parseFloat(document.getElementById('_lng').value);
 console.log("Findride initiated...");
 
 let driverSocket = document.getElementById('driver_socket_id').value;
-let passengerSocket = document.getElementById('passenger_socket_id').value;
+
 
 let passengerName = document.getElementById("_p_name").value;
 let passengerPhone = document.getElementById('_p_phone').value;
+let passengerEmail = document.getElementById('passenger_email').value
+let bookingId = document.getElementById('booking_id').value;
+let tableName = document.getElementById('table_name').value;
+let details = {
+    passengerEmail,
+    bookingId,
+    tableName
+}
+socket.emit('im_passenger', details)
 
 let data = {
     passenger: {
         info: {
             name: passengerName,
             phone: passengerPhone,
-            email: document.getElementById('passenger_email').value
+            email: passengerEmail
         },
         coords: {
             lat: parseFloat(document.getElementById('_lat').value),
             lng: parseFloat(document.getElementById('_lng').value)
         },
-        socketId: passengerSocket
     },
-    driver: { email: document.getElementById('driver_email').value, socketId: driverSocket }
+    driver: { email: document.getElementById('driver_email').value, socketId: driverSocket },
+
+    bookingId
 }
 
 socket.emit('book_request', data);

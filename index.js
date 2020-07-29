@@ -42,23 +42,45 @@ io.on('connection', (socket) => {
 
 
   })
-  socket.on("im_passenger", (email) => {
-    console.log(email + " : " + socket.id);
+  socket.on("im_passenger", (args) => {
+    console.log(args.passengerEmail + " : " + socket.id);
     let sql =
-      `UPDATE passenger SET socketId='${socket.id}' WHERE email='${email}'`
+      `UPDATE passenger SET socketId='${socket.id}' WHERE email='${args.passengerEmail}'`
     db.query(sql, (error, result) => {
       if (error) {
         console.log(error);
-
+      }
+      else {
+        let tableName = args.tableName;
+        let buddyRidesUpdate = `UPDATE ${tableName} SET passengerSocket='${socket.id}' 
+        WHERE id='${args.bookingId}'`;
+        db.query(buddyRidesUpdate, (error, result) => {
+          if (error) {
+            console.log(error);
+          }
+        })
       }
     })
 
   })
   socket.on("book_request", (params) => {
+    console.log("Socket Id : " + socket.id);
+    let getPassengerSocket = `SELECT socketId FROM passenger WHERE email='${params.passenger.info.email}'`
+    db.query(getPassengerSocket, (error, result) => {
+      if (error) {
+        return console.log(error);
+      } else {
+        let passenger = {
+          ...params.passenger,
+          socketId: result[0].socketId
+        }
+        console.log("Passenger Socket Id : " + passenger.socketId);
 
-    socket.broadcast.to(params.driver.socketId).emit('passenger_requests', params.passenger)
-
+        socket.broadcast.to(params.driver.socketId).emit('passenger_requests', passenger)
+      }
+    })
   })
+
   socket.on('driver_response', (params) => {
 
     let updateIsOnline = `UPDATE driver SET isOnline=0 WHERE email='${params.driverEmail}'`;
@@ -85,7 +107,7 @@ io.on('connection', (socket) => {
             lng: parseFloat(liveLocation[1])
           }
 
-          socket.broadcast.emit("_live_tracking", driverLatLng)
+          socket.broadcast.to(params.passengerSocket).emit("_live_tracking", driverLatLng)
 
         }
       })
@@ -129,15 +151,20 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('_passenger_pool_loc', params)
   })
 
+  socket.on('search_for_pool_rides', (socketId) => {
+    console.log("=============Searching Pool Rodes==============");
 
-  // ----------------------- Cancel Ride
+    let sql = "SELECT * FROM buddyridesdetails WHERE status='matching'"
+    db.query(sql, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
 
-  // socket.on('_cancel_ride', data => {
-  //   console.log("==============================");
-  //   console.log("Canceling ride");
-  //   console.log("==============================");
+        socket.emit('rides_ready_for_pool', result);
+      }
+    })
+  })
 
-  // })
 })
 
 
@@ -148,4 +175,3 @@ app.use(router)
 server.listen(port, () => {
   console.log(`Listening on port ${port}..`);
 });
-module.exports

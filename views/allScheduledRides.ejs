@@ -19,9 +19,8 @@
   </head>
   <body>
     <div class="header">
-      <span id="schedule"
-        ><a href="/schedule/scheduleRide">My Schedule</a></span
-      >
+      <span id="schedule"><a href="/driverhome">Home</a></span>
+
       <span class="dropdown"
         ><a href="#" id="pass_name"><%= data.name%></a>
         <input type="hidden" id="pass_email" value="<%=data.email%>" />
@@ -30,7 +29,7 @@
             <li><a href="#">Profile</a></li>
             <li><a href="#" id="_carpool">Carpool</a></li>
             <li><a href="#">Notifications</a></li>
-            <li><a href="/passengerlogin/logout">LogOut</a></li>
+            <li><a href="/upload/logout">LogOut</a></li>
           </ul>
         </div>
       </span>
@@ -52,7 +51,6 @@
             <th>Name</th>
             <th>Phone</th>
             <th>Email</th>
-            <th>Status</th>
             <th>Origin</th>
             <th>Destination</th>
             <th>Date</th>
@@ -68,13 +66,12 @@
             <td><%=rides[i].name%></td>
             <td><%=rides[i].phone%></td>
             <td><%=rides[i].email%></td>
-            <td><%=rides[i].role%></td>
             <td><%=rides[i].origion%></td>
             <td><%=rides[i].destination%></td>
             <td><%=rides[i].pickDate%></td>
             <td><%=rides[i].pickTime%></td>
 
-            <td><%= 5 - rides[i].numberOfPassengers%></td>
+            <td><%= 4 - rides[i].numberOfPassengers%></td>
             <td>
               <a
                 href="/schedule/addpassenger/<%=rides[i].id%>"
@@ -88,6 +85,6 @@
         </tbody>
       </table>
     </div>
-    <script src="/scripts/schedultRides.js"></script>
+    <script src="/scripts/scheduledRides.js"></script>
   </body>
 </html>

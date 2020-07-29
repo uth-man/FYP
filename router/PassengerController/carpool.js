@@ -4,18 +4,15 @@ var router = express.Router();
 
 router.get('/carpool', (req, res) => {
 
-    let sql = "SELECT * from bookingdetails WHERE isPool=true AND status='matching'"
+    let sql = "SELECT * from buddyridesdetails WHERE status='matching'"
     db.query(sql, (error, result) => {
         if (error) {
             console.log(error);
 
         } else {
             console.log(result);
-
         }
     })
-
-
 })
 
 module.exports = router
