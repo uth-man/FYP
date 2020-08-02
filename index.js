@@ -10,6 +10,7 @@ const http = require('http');
 const port = process.env.PORT || 6000;
 
 const router = require("./router/router");
+const { log } = require("console");
 
 const app = express();
 const server = http.createServer(app);
@@ -131,7 +132,7 @@ io.on('connection', (socket) => {
     console.log('==========REQUESTING POOL===========');
 
     console.log(params);
-    db.query(`SELECT * from bookingdetails WHERE isPool=true AND status='matching'`,
+    db.query(`SELECT * from buddyridesdetails WHERE id=${params.rideId} AND status='matching'`,
       (error, result) => {
         if (error) {
           console.log(error);
@@ -142,13 +143,39 @@ io.on('connection', (socket) => {
 
             socket.broadcast.emit('_pooling_results_for_driver', params)
           }
-
+          // No Rides To Pool
         }
       })
 
   })
   socket.on('_passenger_locations', params => {
     socket.broadcast.emit('_passenger_pool_loc', params)
+
+  })
+  socket.on('_driver_locations', email => {
+    db.query(`SELECT name,phone,currentLocation FROM driver WHERE email='${email}'`, (error, result) => {
+      if (error) {
+        console.log(error);
+      } else {
+
+        let location = result[0].currentLocation.split(',');
+        let lat = parseFloat(location[0]);
+        let lng = parseFloat(location[1])
+        let coords = { lat, lng }
+        let params = {
+          name: result[0].name,
+          phone: result[0].phone,
+          coords: coords
+        }
+
+        socket.broadcast.emit('_driver_pool_loc', params)
+
+      }
+    })
+  })
+
+  socket.on('cancel_pool_request', (zilch) => {
+    socket.broadcast.emit("cancel_pool", zilch)
   })
 
   socket.on('search_for_pool_rides', (socketId) => {

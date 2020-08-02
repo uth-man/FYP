@@ -1,125 +1,51 @@
 const socket = io.connect();
+
 let map;
-let driverMark = []
-let passLat = parseFloat(document.getElementById('_lat').value);
-let passLng = parseFloat(document.getElementById('_lng').value);
+let driverMarker = [];
+// let socketId = document.getElementById('data_socketId').dataset.params;
+let tableName = document.getElementById('table_name').dataset.params;
 
+let name = document.getElementById('data_name').dataset.params;
+let phone = document.getElementById('data_phone').dataset.params;
+let email = document.getElementById('data_email').dataset.params;
+let bookingId = document.getElementById('booking_id').dataset.params;
 
-console.log("Findride initiated...");
-
-let driverSocket = document.getElementById('driver_socket_id').value;
-
-
-let passengerName = document.getElementById("_p_name").value;
-let passengerPhone = document.getElementById('_p_phone').value;
-let passengerEmail = document.getElementById('passenger_email').value
-let bookingId = document.getElementById('booking_id').value;
-let tableName = document.getElementById('table_name').value;
 let details = {
-    passengerEmail,
-    bookingId,
-    tableName
+    passengerEmail: email,
+    bookingId: bookingId
 }
-socket.emit('im_passenger', details)
+//socket.emit('im_passenger', details);
+
+
 
 let data = {
-    passenger: {
-        info: {
-            name: passengerName,
-            phone: passengerPhone,
-            email: passengerEmail
-        },
-        coords: {
-            lat: parseFloat(document.getElementById('_lat').value),
-            lng: parseFloat(document.getElementById('_lng').value)
-        },
+    name, email, phone,
+    coords: {
+        lat: parseFloat(document.getElementById('pickLat').value),
+        lng: parseFloat(document.getElementById('pickLng').value)
     },
-    driver: { email: document.getElementById('driver_email').value, socketId: driverSocket },
-
-    bookingId
+    rideId: parseInt(document.getElementById('rideId').value)
 }
+console.log(data);
 
-socket.emit('book_request', data);
+socket.emit("_request_pool", data)
 
-socket.on('_live_tracking', driverCoords => {
+socket.on('_passenger_pool_loc', params => {
+    let coords = params.coords;
+    let content = { name: params.name, phone: params.phone };
 
-    addDriverMarker(driverCoords)
-
+    setPassengerMarker(coords, content);
 })
 
-
-socket.on('_pooling_results', params => {
-    console.log(params);
-
-    // add carpool markers
-    let marker = new google.maps.Marker({
-        position: {
-            lat: parseFloat(params.coords.lat),
-            lng: parseFloat(params.coords.lng)
-        }
-    });
-    marker.setMap(map)
-    let infoWindow1 = new google.maps.InfoWindow();
-    infoWindow1.setContent(`<b>${params.name}</b><br/>${params.phone}`)
-    infoWindow1.open(map, marker)
-    // marker.setIcon({
-    //     url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
-    //     scaledSize: new google.maps.Size(50, 50)
-    // })
-
-    let passengerLocation = {
-        lat: parseFloat(passLat),
-        lng: parseFloat(passLng)
-    }
-    let name = document.getElementById('user_name').innerText
-    let parameters = {
-        name: name,
-        phone: passengerPhone,
-        coords: passengerLocation
-    }
-    // accept pool request
-
-    let poolBox = document.getElementById('pool_request_box');
-    let msgElem = document.getElementById('req_message');
-    let acceptBtn = document.getElementById('accept_pool');
-
-    poolBox.style.display = "block";
-    msgElem.innerHTML = `${params.name} sent pool request`
-    acceptBtn.addEventListener('click', (e) => {
-        socket.emit("_passenger_locations", parameters);
-        poolBox.style.display = "none";
-
-        let marker1 = new google.maps.Marker({
-            position: {
-                lat: parseFloat(params.coords.lat),
-                lng: parseFloat(params.coords.lng)
-            }
-        });
-        marker1.setMap(map)
-        let infoWindow = new google.maps.InfoWindow();
-        infoWindow.setContent(`<b>${params.name}</b><br/>${params.phone}`)
-        infoWindow.open(map, marker1)
-
-    })
-
-    let rejectBtn = document.getElementById('reject_pool');
-    rejectBtn.addEventListener('click', (e) => {
-        socket.emit('cancel_pool_request', " ")
-        poolBox.style.display = "none";
-        marker.setMap(null)
-    })
-
+socket.on('_driver_pool_loc', params => {
+    let content = { name: params.name, phone: params.phone }
+    setDriverMarker(params.coords, content)
+    displayDriverMarker();
 })
 
-
-// ===================== Canceling Ride
-
-// let cancelForm = document.getElementById('search_form')
-// cancelForm.onsubmit(() => {
-
-// })
-
-
+socket.on('cancel_pool', zilch => {
+    removeDriverMarker();
+})
 
 function initMap() {
 
@@ -305,79 +231,53 @@ function initMap() {
                 ]
             }
         ]
-
     }
+
     map = new google.maps.Map(document.getElementById('map'), options);
-    map.setCenter(data.passenger.coords)
+    map.setCenter(data.coords)
 
-    addPassengerMarker(data.passenger.coords)
+    let marker = new google.maps.Marker();
+    marker.setPosition(data.coords);
+    marker.setMap(map);
 
-
-    // ----------------------------------------- Open Pool --------------------------------
-
-
-    let openPool = document.getElementById('open_pool');
-    openPool.addEventListener("click", (e) => {
-        openPool.style.display = "none";
-        let email = document.getElementById('passenger_email').value
-
-        socket.emit("_open_pool", email)
-        let time = 180;
-        let countDown = document.getElementById('count-down');
-        let startInterval = setInterval(updateTime, 1000)
-
-        function updateTime() {
-            countDown.style.display = 'block'
-            countDown.innerHTML = time;
-            time--;
-            if (time < -1) {
-                clearInterval(startInterval)
-                countDown.style.display = 'none'
-            }
-        }
-
-    })
-
+    let infoWindow = new google.maps.InfoWindow();
+    infoWindow.setContent("Me");
+    infoWindow.open(map, marker)
 
 }
-// ------------------------------------------ Markers ---------------------------------
 
+function setPassengerMarker(coords, content) {
+    let marker = new google.maps.Marker();
+    marker.setPosition(coords);
+    marker.setMap(map);
+    let infoWindow = new google.maps.InfoWindow();
+    infoWindow.setContent(`<b>${content.name}</b><br/>${content.phone}`);
+    infoWindow.open(map, marker)
+}
 
-function addDriverMarker(coords) {
-    if (!driverMark.length == 0) {
-        driverMark.forEach(m => {
-            m.setMap(null)
+function setDriverMarker(coords, content) {
+
+    let marker = new google.maps.Marker();
+    marker.setPosition(coords);
+    let infoWindow = new google.maps.InfoWindow();
+    infoWindow.setContent(`<b>Driver</b><br/>${content.name}<br/>${content.phone}`);
+    infoWindow.open(map, marker)
+    driverMarker.push(marker);
+
+}
+function displayDriverMarker() {
+    if (!driverMarker.length == 0) {
+        driverMarker.forEach(marker => {
+            marker.setMap(map)
         })
     }
-    let marker = new google.maps.Marker();
-    marker.setPosition(coords);
-    marker.setMap(map);
-    // marker.setIcon({
-    //     url: "https://img.icons8.com/color/48/000000/car-top-view.png"
-    // })
-
-    let infoWindow = new google.maps.InfoWindow();
-    infoWindow.setContent("Driver")
-    infoWindow.open(map, marker)
-
-    driverMark.push(marker)
+}
+function removeDriverMarker() {
+    if (!driverMarker.length == 0) {
+        driverMarker.forEach(marker => {
+            marker.setMap(null)
+        })
+    }
 }
 
-function addPassengerMarker(coords) {
-    // console.log("passenger location : ");
-    // console.log(coords);
-
-    let marker = new google.maps.Marker();
-    marker.setPosition(coords);
-    marker.setMap(map);
-    // marker.setIcon({
-    //     url: "https://img.icons8.com/plasticine/100/000000/standing-man.png",
-    //     scaledSize: new google.maps.Size(50, 50)
-    // })
-
-    let infoWindow = new google.maps.InfoWindow();
-    infoWindow.setContent("Passenger")
-    infoWindow.open(map, marker)
-}
-
-
+displayDriverMarker()

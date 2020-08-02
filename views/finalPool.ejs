@@ -37,16 +37,20 @@
     <!---->
 
     <!---------------------Booking Details------------------>
+    <div id="no_pooling_rides">
+      <h4>Currently no ride near to you</h4>
+      <span>Book a ride and let others find you</span><br /><br />
 
+      <a href="/passengerhome" id="cancel">Cancel</a>
+      <a href="/passenger/casualride" id="book_ride">Book Ride</a>
+    </div>
     <div class="bookingDetails">
-      <div class="head"><h1 id="heading">Add drop-off location</h1></div>
-      <form action="/passenger/findpool" id="search_form" method="GET">
-        <input
-          type="text"
-          id="search"
-          placeholder="Enter Pickup Location"
-          required
-        />
+      <div class="head"><h1 id="heading">All Nearby Rides</h1></div>
+      <form
+        action="/passenger/findpool/requestpool"
+        id="search_form"
+        method="GET"
+      >
         <input
           type="hidden"
           id="pickLat"
@@ -59,15 +63,35 @@
           name="pickLng"
           value="<%=data.coordinates.origin.lng%>"
         />
-        <input type="hidden" name="dropLat" id="dropLat" />
-        <input type="hidden" name="dropLng" id="dropLng" />
-        <input type="hidden" name="fare" id="_fare" />
+        <input
+          type="hidden"
+          name="dropLat"
+          id="dropLat"
+          value="<%=data.coordinates.destination.lat%>"
+        />
+        <input
+          type="hidden"
+          name="dropLng"
+          id="dropLng"
+          value="<%=data.coordinates.destination.lng%>"
+        />
+        <input type="hidden" id="fare" name="fare" value="<%=fare%>" />
+        <input type="text" id="rideId" value="<%=rideId%>" />
         <br />
-        <button id="" type="submit">Find Ride</button>
+        <button id="" type="submit">Request Pool</button>
       </form>
       <hr />
+
       <div id="estimatedValues"></div>
     </div>
+
+    <!-------------------------- Socket ---------------------->
+
+    <!-- <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+
+    <script src="/web-sockets/passengerSocket.js"></script> -->
+
+    <!------------------------ Map -------------------------->
 
     <div id="map" class="map"></div>
     <script
@@ -75,6 +99,15 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=<%=data.key%>&callback=initMap&libraries=places"
     ></script>
-    <script src="/scripts/mapPassengerDropoff.js"></script>
+
+    <div id="data_name" data-params="<%=data.name%>"></div>
+    <div id="data_email" data-params="<%=data.email%>"></div>
+    <div id="data_phone" data-params="<%=data.phone%>"></div>
+    <div id="data_socketId" data-params="<%=data.socketId%>"></div>
+    <div id="table_name" data-params="<%=data.tableName%>"></div>
+    <div id="booking_id" data-params="<%=data.bookingId%>"></div>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="/scripts/finalPool.js"></script>
   </body>
 </html>

@@ -3,6 +3,7 @@ let map;
 let markers = [];
 let initialCurrentLocation;
 let passengerMark = [];
+let poolMarkers = [];
 
 let email = document.getElementById("_email").value;
 socket.emit('im_driver', email)
@@ -57,8 +58,13 @@ socket.on('_pooling_results_for_driver', params => {
     }
 
     setPoolMarker(coords, params)
-})
+    displayPoolMarkers();
 
+    socket.emit('_driver_locations', document.getElementById('_email').value)
+})
+socket.on('cancel_pool', zilch => {
+    removePoolMarkers();
+})
 function initMap() {
 
     navigator.geolocation.getCurrentPosition(p => {
@@ -96,7 +102,6 @@ function initMap() {
         zoom: 16,
         draggableCursor: 'default',
         disableDefaultUI: true,
-
     });
 
     function addMarker(coords, icon) {
@@ -115,19 +120,36 @@ function initMap() {
 
         markers.push(marker)
     }
-
-
 }
+
+
 function setPoolMarker(coords, info) {
+
     let marker = new google.maps.Marker();
     marker.setPosition(coords);
-    marker.setMap(map)
     let infoWindow = new google.maps.InfoWindow();
     infoWindow.setContent(`<b>${info.name}</b><br/> ${info.phone}`)
     infoWindow.open(map, marker)
+    poolMarkers.push(marker)
 
     // socket.emit('live_location_for_passenger', "live Location For Passenger")
 }
+function displayPoolMarkers() {
+    if (!poolMarkers.length == 0) {
+        poolMarkers.forEach(marker => {
+            marker.setMap(map)
+        });
+    }
+}
+
+function removePoolMarkers() {
+    if (!poolMarkers.length == 0) {
+        poolMarkers.forEach(marker => {
+            marker.setMap(null)
+        })
+    }
+}
+
 
 function setPassengerMarker(coords, info) {
     if (!passengerMark.length == 0) {
@@ -143,3 +165,4 @@ function setPassengerMarker(coords, info) {
     infoWindow.open(map, marker)
     passengerMark.push(marker)
 }
+displayPoolMarkers();

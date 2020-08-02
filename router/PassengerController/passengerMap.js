@@ -74,10 +74,12 @@ router.get('/findpool', (req, res) => {
             console.log(req.session.user);
         }
     })
-    res.render('passengerAllPools', { data: req.session.user })
+    res.render('passengerAllPools', { data: req.session.user, fare: req.query.fare })
 
 })
-
+router.get('/findpool/requestpool', (req, res) => {
+    res.render('finalPool', { data: req.session.user, fare: req.query.fare, rideId: req.query.nearestRideId })
+})
 router.get('/casualride/coordinates/findride', casualRides.createCasualRidesDetails, (req, res) => {
 
 
@@ -118,12 +120,12 @@ router.get('/casualride/coordinates/findride', casualRides.createCasualRidesDeta
             res.send("All Rides are busy")
         } else {
             let sql =
-                `INSERT INTO casualRidesDetails (passengerName,passengerEmail,passengerPhone,passengerSocket,driverName,driverEmail,driverPhone,origion,destination,passengers,status)
+                `INSERT INTO casualRidesDetails (passengerName,passengerEmail,passengerPhone,passengerSocket,driverName,driverEmail,driverPhone,origion,destination,passengers,status,fare)
                 VALUES ('${req.session.user.name}','${req.session.user.email}',
                 '${req.session.user.phone}','...','${closestDriver.name}',
                 '${closestDriver.email}','${closestDriver.phone}',
                 '${req.session.user.coordinates.origin.lat} ${req.session.user.coordinates.origin.lng}',
-                '${req.session.user.coordinates.destination.lat} ${req.session.user.coordinates.destination.lng}',1,'matching')`
+                '${req.session.user.coordinates.destination.lat} ${req.session.user.coordinates.destination.lng}',1,'matching','${req.query.fare}')`
             db.query(sql, (error, result) => {
                 if (error) {
                     console.log(error);
@@ -134,7 +136,10 @@ router.get('/casualride/coordinates/findride', casualRides.createCasualRidesDeta
                     req.session.user.tableName = "casualRidesDetails"
 
                     console.log("CasualRidesDetails updated successfully");
-                    res.render('findRide', { data: req.session.user, driver: closestDriver })
+                    setTimeout(() => {
+                        res.render('findRide', { data: req.session.user, driver: closestDriver })
+                    }, 1500);
+
                 }
             })
 
@@ -183,13 +188,13 @@ router.get("/buddyride/coordinates/findride", buddyRide.createBuddyRidesDetails,
             res.send("All Rides are busy")
         } else {
             let sql =
-                `INSERT INTO buddyRidesDetails (passengerName,passengerEmail,passengerPhone,passengerSocket,driverName,driverEmail,driverPhone,origion,destination,passengers,status)
+                `INSERT INTO buddyRidesDetails (passengerName,passengerEmail,passengerPhone,passengerSocket,driverName,driverEmail,driverPhone,origion,destination,passengers,status,fare)
                 VALUES ('${req.session.user.name}','${req.session.user.email}',
                 '${req.session.user.phone}','...',
                 '${closestDriver.name}','${closestDriver.email}',
                 '${closestDriver.phone}',
                 '${req.session.user.coordinates.origin.lat} ${req.session.user.coordinates.origin.lng}',
-                '${req.session.user.coordinates.destination.lat} ${req.session.user.coordinates.destination.lng}',1,'matching')`
+                '${req.session.user.coordinates.destination.lat} ${req.session.user.coordinates.destination.lng}',1,'matching','${req.query.fare}')`
             db.query(sql, (error, result) => {
                 if (error) {
                     console.log(error);

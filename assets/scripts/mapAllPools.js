@@ -1,7 +1,9 @@
 const socket = io.connect();
 
-let map;
+let closestRide = [];
 
+let map;
+let numberOfPools = 0;
 let dropLat = parseFloat(document.getElementById('dropLat').value)
 let dropLng = parseFloat(document.getElementById('dropLng').value)
 
@@ -18,7 +20,7 @@ let socketId = document.getElementById('data_socketId').dataset.params;
 console.log(name);
 console.log(email);
 console.log(phone);
-console.log(socketId);
+
 
 function initMap() {
     let location = {
@@ -31,6 +33,184 @@ function initMap() {
         zoom: 14,
         draggableCursor: 'default',
         disableDefaultUI: true,
+        styles: [
+            {
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#242f3e"
+                    }
+                ]
+            },
+            {
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#746855"
+                    }
+                ]
+            },
+            {
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "color": "#242f3e"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.locality",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#d59563"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#d59563"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.business",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.park",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#263c3f"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.park",
+                "elementType": "labels.text",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.park",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#6b9a76"
+                    }
+                ]
+            },
+            {
+                "featureType": "road",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#38414e"
+                    }
+                ]
+            },
+            {
+                "featureType": "road",
+                "elementType": "geometry.stroke",
+                "stylers": [
+                    {
+                        "color": "#212a37"
+                    }
+                ]
+            },
+            {
+                "featureType": "road",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#9ca5b3"
+                    }
+                ]
+            },
+            {
+                "featureType": "road.highway",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#746855"
+                    }
+                ]
+            },
+            {
+                "featureType": "road.highway",
+                "elementType": "geometry.stroke",
+                "stylers": [
+                    {
+                        "color": "#1f2835"
+                    }
+                ]
+            },
+            {
+                "featureType": "road.highway",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#f3d19c"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#2f3948"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit.station",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#d59563"
+                    }
+                ]
+            },
+            {
+                "featureType": "water",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "color": "#17263c"
+                    }
+                ]
+            },
+            {
+                "featureType": "water",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#515c6d"
+                    }
+                ]
+            },
+            {
+                "featureType": "water",
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "color": "#17263c"
+                    }
+                ]
+            }
+        ]
     }
     map = new google.maps.Map(document.getElementById('map'), options);
 
@@ -62,7 +242,7 @@ function initMap() {
                 if (status === "OK") {
                     console.log("pick up dist");
                     console.log(response.rows[0].elements[0].distance.value);
-
+                    let pickUpDis = response.rows[0].elements[0].distance.value;
                     if (response.rows[0].elements[0].distance.value <= 1000) {
                         distanceMatrixService.getDistanceMatrix({
                             origins: [dropLat + ',' + dropLng],
@@ -79,29 +259,23 @@ function initMap() {
                                     let contentDrop = `<b>Drop-off</b></br><b>${res.passengerName}</b>`
                                     drawMarker(pickUpCoords, contentPick)
                                     drawMarker(dropOffCoords, contentDrop)
-
-                                } else {
-                                    console.log("=========================");
-                                    console.log("No nearest pools")
-                                    console.log("=========================");
+                                    let details = { ...res, pickUpDistance: pickUpDis }
+                                    closestRide.push(details);
                                 }
                             }
                         })
-                    } else {
-                        console.log("=========================");
-                        console.log("No nearest pools")
-                        console.log("=========================");
                     }
                 }
             })
         });
+        setTimeout(checkRides, 5000);
+        setTimeout(findNearestRide, 6000);
     });
-
 }
-function distanceCalculator(origin, destination) {
 
-}
+
 function drawMarker(coords, content) {
+    numberOfPools++;
     let marker = new google.maps.Marker();
     marker.setPosition(coords);
     marker.setMap(map);
@@ -110,5 +284,31 @@ function drawMarker(coords, content) {
     infoWindow.setContent(content);
     infoWindow.open(map, marker);
 }
+function checkRides() {
+    if (numberOfPools == 0) {
+        document.getElementById('no_pooling_rides').style.display = "block";
+    } else {
+        let estCost = parseInt(document.getElementById('fare').value);
+        let finalCost = estCost + estCost / 2;
+        finalCost = Math.ceil(finalCost / 2);
+        let div = document.getElementById('estimatedValues');
+        div.innerHTML = "<b>Estimated Fare : </b><span>Rs." + finalCost + "</span>";
+    }
+}
 
-
+function findNearestRide() {
+    if (closestRide.length == 1) {
+        document.getElementById('nearest_ride').value = closestRide[0].id;
+        console.log(closestRide[0]);
+    }
+    if (closestRide.length > 1) {
+        const closest = closestRide.reduce(
+            (acc, loc) =>
+                acc.pickUpDistance < loc.pickUpDistance
+                    ? acc
+                    : loc
+        )
+        document.getElementById('nearest_ride').value = closest.id;
+        console.log(closest);
+    }
+}

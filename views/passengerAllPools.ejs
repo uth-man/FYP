@@ -20,7 +20,7 @@
 
   <body>
     <div class="header">
-      <span id="schedule"><a href="#">Schedule Ride</a></span>
+      <span id="schedule"><a href="/passengerhome">Home</a></span>
       <span class="dropdown"
         ><a href="#"><%= data.name%></a>
         <div class="dropdown-content">
@@ -37,38 +37,51 @@
     <!---->
 
     <!---------------------Booking Details------------------>
+    <div id="no_pooling_rides">
+      <h4>Currently no ride near to you</h4>
+      <span>Book a ride and let others find you</span><br /><br />
 
+      <a href="/passengerhome" id="cancel">Cancel</a>
+      <a href="/passenger/casualride" id="book_ride">Book Ride</a>
+    </div>
     <div class="bookingDetails">
       <div class="head"><h1 id="heading">All Nearby Rides</h1></div>
-      <form action="/passenger/findpool" id="search_form" method="GET">
+      <form
+        action="/passenger/findpool/requestpool"
+        id="search_form"
+        method="GET"
+      >
         <input
-          type="text"
+          type="hidden"
           id="pickLat"
           name="pickLat"
           value="<%=data.coordinates.origin.lat%>"
         />
         <input
-          type="text"
+          type="hidden"
           id="pickLng"
           name="pickLng"
           value="<%=data.coordinates.origin.lng%>"
         />
         <input
-          type="text"
+          type="hidden"
           name="dropLat"
           id="dropLat"
           value="<%=data.coordinates.destination.lat%>"
         />
         <input
-          type="text"
+          type="hidden"
           name="dropLng"
           id="dropLng"
           value="<%=data.coordinates.destination.lng%>"
         />
+        <input type="hidden" id="fare" name="fare" value="<%=fare%>" />
+        <input type="text" name="nearestRideId" id="nearest_ride" />
         <br />
-        <button id="" type="submit">Find Ride</button>
+        <button id="" type="submit">Request Pool</button>
       </form>
       <hr />
+
       <div id="estimatedValues"></div>
     </div>
 

@@ -109,3 +109,42 @@ hr {
   font-size: 30px;
   font-weight: 600;
 }
+#no_pooling_rides {
+  padding-bottom: 20px;
+  position: absolute;
+  top: 10%;
+  opacity: 0.9;
+  left: 50%;
+  width: 30%;
+  border: 2px solid rgba(255, 255, 0, 0.596);
+  border-radius: 10%;
+
+  text-align: center;
+  color: black;
+  background-color: whitesmoke;
+  z-index: 100;
+  display: none;
+}
+#no_pooling_rides span {
+  color: gray;
+}
+#no_pooling_rides,
+#cancel,
+#book_ride {
+  text-decoration: none;
+  font-size: 20px;
+}
+#no_pooling_rides #cancel {
+  background-color: #0275d8;
+  border: 2px solid white;
+  border-radius: 10%;
+  color: white;
+  padding: 5px;
+}
+#no_pooling_rides #book_ride {
+  background-color: green;
+  border: 2px solid white;
+  border-radius: 10%;
+  color: white;
+  padding: 5px;
+}
