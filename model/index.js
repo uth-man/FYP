@@ -1,55 +1,29 @@
 const mysql = require("mysql");
 
-// let db_config = {
-//   host: "us-cdbr-east-02.cleardb.com",
-//   user: "bf4808090a525d",
-//   password: "5d20a066",
-//   database: "heroku_4a12729e85039f6"
-
-//   // For Development
-//   // host: "localhost",
-//   // user: "root",
-//   // password: "",
-//   // database: "findmybuddyrider"
-// }
 
 let db;
 let db_config = {
-  host: "us-cdbr-east-02.cleardb.com",
-  user: "bf4808090a525d",
-  password: "5d20a066",
-  database: "heroku_4a12729e85039f6"
+  // host: "us-cdbr-east-02.cleardb.com",
+  // user: "bf4808090a525d",
+  // password: "5d20a066",
+  // database: "heroku_4a12729e85039f6"
   // For Development
-  // host: "localhost",
-  // user: "root",
-  // password: "",
-  // database: "findmybuddyrider"
-}
-db = mysql.createConnection(db_config);
-
-db.connect(err => {
-  if (err) {
-    console.log("*******Error while connecting to Database******** ");
-    console.log(err);
-    setTimeout(handleDisconnect, 3000)
-  } else {
-    console.log("MySQL Connected");
-  }
-});
-
-
-function handleDisconnect() {
-  db.connect(err => {
-    if (err) {
-      console.log("*******Error while connecting to Database******** ");
-      console.log(err);
-      setTimeout(handleDisconnect, 3000)
-    } else {
-      console.log("MySQL Connected");
-    }
-  });
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "findmybuddyrider"
 }
 
+db = mysql.createPool(db_config);
+
+// db.connect(err => {
+//   if (err) {
+//     console.log("*******Error while connecting to Database******** ");
+//     console.log(err);
+//   } else {
+//     console.log("MySQL Connected");
+//   }
+// });
 
 
 // Creating Tables
@@ -136,5 +110,4 @@ module.exports = {
   createScheduleRides: createScheduleRides,
   createCasualRidesDetails: createCasualRidesDetails,
   createBuddyRidesDetails: createBuddyRidesDetails,
-  handleDisconnect: handleDisconnect
 };
