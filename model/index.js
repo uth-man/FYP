@@ -30,8 +30,8 @@ let db_config = {
 }
 db = mysql.createConnection(db_config);
 
-db.on('error', handleDisconnect)
 
+handleDisconnect();
 function handleDisconnect() {
   db.connect(err => {
     if (err) {
@@ -43,7 +43,7 @@ function handleDisconnect() {
     }
   });
 }
-handleDisconnect();
+db.on('error', handleDisconnect)
 
 
 // Creating Tables
