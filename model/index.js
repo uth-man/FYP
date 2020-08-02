@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 
 
-let db;
+
 let db_config = {
   // host: "us-cdbr-east-02.cleardb.com",
   // user: "bf4808090a525d",
@@ -14,21 +14,26 @@ let db_config = {
   database: "findmybuddyrider"
 }
 
-db = mysql.createPool(db_config);
+let db;
+function handleDisconnect() {
+  db = mysql.createConnection(db_config);
 
-// db.connect(err => {
-//   if (err) {
-//     console.log("*******Error while connecting to Database******** ");
-//     console.log(err);
-//   } else {
-//     console.log("MySQL Connected");
-//   }
-// });
-
-
-// Creating Tables
-//creatingAllTables();
-
+  db.connect((err) => {
+    if (err) {
+      console.log("Error when connecting to DB : " + err);
+      setTimeout(handleDisconnect, 2000);
+    }
+  })
+  db.on('error', (err) => {
+    console.log("db error : " + err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  })
+}
+handleDisconnect()
 
 
 function createScheduleRides(req, res, next) {
