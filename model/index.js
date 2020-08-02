@@ -11,29 +11,39 @@ let db_config = {
   host: "localhost",
   user: "root",
   password: "",
-  database: "findmybuddyrider"
+  database: "findmybuddyrider",
+
 }
 
 let db;
-function handleDisconnect() {
-  db = mysql.createConnection(db_config);
 
-  db.connect((err) => {
-    if (err) {
-      console.log("Error when connecting to DB : " + err);
-      setTimeout(handleDisconnect, 2000);
-    }
-  })
-  db.on('error', (err) => {
-    console.log("db error : " + err);
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      handleDisconnect();
-    } else {
-      throw err;
-    }
-  })
-}
-handleDisconnect()
+db = mysql.createPool({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "findmybuddyrider",
+  connectionLimit: 10
+})
+
+// function handleDisconnect() {
+//   db = mysql.createConnection(db_config);
+
+//   db.connect((err) => {
+//     if (err) {
+//       console.log("Error when connecting to DB : " + err);
+//       setTimeout(handleDisconnect, 2000);
+//     }
+//   })
+//   db.on('error', (err) => {
+//     console.log("db error : " + err);
+//     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+//       handleDisconnect();
+//     } else {
+//       throw err;
+//     }
+//   })
+// }
+// handleDisconnect()
 
 
 function createScheduleRides(req, res, next) {
