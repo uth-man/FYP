@@ -12,10 +12,10 @@ db = mysql.createPool({
   // connectionLimit: 10
 
   // For Development
-  host: "us-cdbr-east-02.cleardb.com",
-  user: "bfa8f658222b23",
-  password: "651e7716",
-  database: "heroku_3cb4da687553e85",
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
 
 })
 
