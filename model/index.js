@@ -12,10 +12,10 @@ db = mysql.createPool({
   // connectionLimit: 10
 
   // For Development
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "findmybuddyrider",
+  host: "us-cdbr-east-02.cleardb.com",
+  user: "bfa8f658222b23",
+  password: "651e7716",
+  database: "heroku_3cb4da687553e85",
 
 })
 
