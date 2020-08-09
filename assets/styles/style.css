@@ -83,7 +83,7 @@ body a {
 .menu #nav #login {
   color: #105b63;
   position: relative;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 600;
   background-color: #105b63;
   color: white;
@@ -1291,6 +1291,11 @@ button {
   border-radius: 5px;
   padding: 10px;
 }
+.passengerForm label {
+  color: white;
+  float: left;
+  margin-left: 10%;
+}
 .passengerForm button {
   background: #e49002;
   color: white;
@@ -1371,6 +1376,11 @@ select {
   border-radius: 5px;
   padding: 10px;
 }
+.driverForm label {
+  color: white;
+  float: left;
+  margin-left: 10%;
+}
 .driverForm .driver_details input[name="gender"] {
   color: white;
 }
@@ -1384,7 +1394,7 @@ a {
   color: white;
 }
 .driver_signup_footer_pic img {
-  margin-top: 55%;
+  margin-top: 75%;
   width: 100%;
   overflow: hidden;
   opacity: 0.8;

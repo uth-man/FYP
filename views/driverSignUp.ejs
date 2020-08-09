@@ -50,13 +50,16 @@
 
         <div class="driver_details">
           <h2>Personal Details</h2>
+          <label>Full Name</label>
           <input
             type="text"
             name="name"
             id="name"
-            placeholder="Full Name"
+            placeholder="Full Name (Only alphabets and spaces)"
+            pattern="^[a-zA-Z]+(\s[a-zA-Z]+)?$"
             required
           />
+          <label>Email</label>
           <input
             type="email"
             name="email"
@@ -66,6 +69,7 @@
             placeholder="example@email.com"
             required
           />
+          <label>Phone Number</label>
           <input
             type="tel"
             name="phone"
@@ -73,7 +77,9 @@
             placeholder="Phone # (03**-1234567)"
             required
             pattern="[0-9]{4}-[0-9]{7}"
+
           />
+          <label>CNIC</label>
           <input
             type="text"
             name="cnic"
@@ -82,16 +88,26 @@
             required
             pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"
           />
+          <label>Driving License</label>
           <input
-            type="text"
+            type="number"
             name="drivingLicense"
             id="drivingLicense"
             placeholder="Driving License"
+            
+            min="100000000000"
+            oninvalid="this.setCustomValidity('Enter valid lecence number (12 digits) ')"
+    oninput="this.setCustomValidity('')"
+
+            required
+            
           /><br>
           
-          <label for="gender" style = "color: white;" >Gender : </label>
-          <input type="radio" name="gender" value="Male" required >Male</input>
-          <input type="radio" name="gender" value="Female">Female</input>
+          <label for="gender" style = "color: white;" >Gender </label>
+          <input type="radio" name="gender" value="Male" required><span style="color: white;">Male</span> </input>
+          <input type="radio" name="gender" value="Female"><span style="color: white;">Female</span></input>
+          <br /><br />
+          <label for="">Password</label>
           <input
             type="password"
             name="password"
@@ -103,7 +119,9 @@
           /> 
         </div>
         <div class="car_details">
+          
           <h2>Vehicle Details</h2>
+          <label for="">Engine Number</label>
           <input
             type="text"
             name="vehicleEngine"
@@ -111,6 +129,7 @@
             placeholder="Vehicle Engine Number"
             required
           />
+          <label for="">Model</label>
           <input
             type="number"
             name="vehicleModel"
@@ -118,7 +137,7 @@
             min="1996"
             placeholder="Vehicle Model"
             required
-          />
+          /> <label for="">License Plate Number</label>
           <input type="text" 
           name="licensePlate" 
           id="licensePlate" 
@@ -127,11 +146,13 @@
           required
           
           >
+          <label for="">Vehicle Class</label>
           <select name="vehicleClass" id="vehicleClass" required>
             <option value="" disabled selected>Vehicle Class</option>
             <option value="Auto">Auto</option>
             <option value="Manual">Manual</option>
           </select>
+          <label for="">Vehicle Type</label>
           <select name="vehicleType" id="vehicleType" required>
             <option value="" disabled selected>Vehicle Type</option>
             <option value="car">Car</option>

@@ -1,6 +1,9 @@
+const db = require("../model/index").db;
 const express = require("express");
 const router = express.Router();
-const db = require("../model/index");
+
+const createFeedbackTable = require("../model/index").createFeedbackTable
+
 
 router.get("/", (req, res) => {
   res.render("index");
@@ -11,7 +14,23 @@ router.get("/about", (req, res) => {
 });
 
 router.get("/contact", (req, res) => {
-  res.render("contact");
+  res.render("contact", { user: req.session });
+});
+
+
+router.get("/contact/feedbacks", createFeedbackTable, (req, res) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+  let insertData = `INSERT INTO userfeedback (email,name,subject,feedbackDescription)
+  VALUES ('${req.query.name}','${req.query.email}','${req.query.subject}','${req.query.userMessage}')`
+
+  db.query(insertData, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    return res.redirect('/contact')
+  })
 });
 
 router.get("/services", (req, res) => {
@@ -54,7 +73,9 @@ router.get("/driverlogin", (req, res) => {
   }
 });
 
-router.get("/admin", (req, res) => {
+const createAdmin = require('../model/index').createTableAdmin
+
+router.get("/admin", createAdmin, (req, res) => {
   res.render("admin", { error: "" });
 });
 module.exports = router;

@@ -2,6 +2,7 @@ const db = require("../../model/index").db;
 const express = require("express");
 const router = express.Router();
 
+
 router.get('/home', (req, res) => {
   res.render("adminDashboard")
 })
@@ -116,8 +117,20 @@ router.get("/updateDriver/:id", (req, res) => {
   })
 })
 
-router.get('/bookingdetails', (req, res) => {
-  let sql = "SELECT * FROM bookingdetails";
+router.get('/individualridesdetails', (req, res) => {
+  let sql = "SELECT * FROM casualridesdetails";
+  db.query(sql, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    else {
+      res.status(200).render("bookingDetails", { result: result })
+    }
+  })
+})
+
+router.get('/buddyridesdetails', (req, res) => {
+  let sql = "SELECT * FROM buddyridesdetails";
   db.query(sql, (err, result) => {
     if (err) {
       return console.log(err);

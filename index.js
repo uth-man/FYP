@@ -11,6 +11,7 @@ const port = process.env.PORT || 6000;
 
 const router = require("./router/router");
 const { log } = require("console");
+const { param } = require("./router/apis");
 
 const app = express();
 const server = http.createServer(app);
@@ -146,10 +147,33 @@ io.on('connection', (socket) => {
           // No Rides To Pool
         }
       })
-
   })
   socket.on('_passenger_locations', params => {
-    socket.broadcast.emit('_passenger_pool_loc', params)
+    let getAll = `SELECT passengers FROM buddyridesdetails WHERE id=${params.rideId}`
+    db.query(getAll, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(result);
+        console.log(params.rideId);
+        let numOfPass = parseInt(result[0].passengers)
+
+        let addPass = numOfPass + 1;
+
+        let sql = `UPDATE buddyridesdetails SET isPool=1, passengers=${addPass} WHERE id=${params.rideId}`;
+        db.query(sql, (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+          else {
+            console.log(`Number of passengers in buddy ride (${numOfPass}) = ${params.rideId}`);
+          }
+        })
+      }
+
+    })
+
+    socket.broadcast.emit('_passenger_pool_loc', params);
 
   })
   socket.on('_driver_locations', email => {

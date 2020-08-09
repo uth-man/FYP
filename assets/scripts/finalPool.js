@@ -16,16 +16,16 @@ let details = {
 }
 //socket.emit('im_passenger', details);
 
-
-
 let data = {
     name, email, phone,
     coords: {
         lat: parseFloat(document.getElementById('pickLat').value),
         lng: parseFloat(document.getElementById('pickLng').value)
     },
-    rideId: parseInt(document.getElementById('rideId').value)
+    rideId: parseInt(document.getElementById('rideId').value),
+    rideFare: parseInt(document.getElementById('fare'))
 }
+
 console.log(data);
 
 socket.emit("_request_pool", data)

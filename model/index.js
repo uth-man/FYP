@@ -2,48 +2,22 @@ const mysql = require("mysql");
 
 
 
-let db_config = {
+let db;
+
+db = mysql.createPool({
   // host: "us-cdbr-east-02.cleardb.com",
   // user: "bf4808090a525d",
   // password: "5d20a066",
-  // database: "heroku_4a12729e85039f6"
+  // database: "heroku_4a12729e85039f6",
+  // connectionLimit: 10
+
   // For Development
   host: "localhost",
   user: "root",
   password: "",
   database: "findmybuddyrider",
 
-}
-
-let db;
-
-db = mysql.createPool({
-  host: "us-cdbr-east-02.cleardb.com",
-  user: "bf4808090a525d",
-  password: "5d20a066",
-  database: "heroku_4a12729e85039f6",
-  connectionLimit: 10
 })
-
-// function handleDisconnect() {
-//   db = mysql.createConnection(db_config);
-
-//   db.connect((err) => {
-//     if (err) {
-//       console.log("Error when connecting to DB : " + err);
-//       setTimeout(handleDisconnect, 2000);
-//     }
-//   })
-//   db.on('error', (err) => {
-//     console.log("db error : " + err);
-//     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-//       handleDisconnect();
-//     } else {
-//       throw err;
-//     }
-//   })
-// }
-// handleDisconnect()
 
 
 function createScheduleRides(req, res, next) {
@@ -117,6 +91,43 @@ function createBuddyRidesDetails(req, res, next) {
     }
   })
 }
+function createFeedbackTable(req, res, next) {
+  let sql = "CREATE TABLE IF NOT EXISTS userfeedback (email varchar(255),name varchar(255),subject varchar(255),feedbackDescription varchar(255), timeStamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)"
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("userFeedback table created");
+      next();
+    }
+  })
+}
+function createTableAdmin(req, res, next) {
+  let sql = "CREATE TABLE IF NOT EXISTS admin (name varchar(255), email varchar(255), password varchar(255))"
+  db.query(sql, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      let select = "SELECT * FROM admin"
+      db.query(select, (err, result) => {
+        if (err) {
+          console.log(err);
+        } if (result.length === 0) {
+          let createAdmin = "INSERT INTO admin (name,email,password) VALUES ('Usman','usmansardar247@gmail.com','Usman123')"
+          db.query(createAdmin, (err, result) => {
+            if (err) {
+              console.log(err);
+            }
+            else return next();
+          })
+        }
+        return next()
+      })
+
+    }
+
+  })
+}
 
 module.exports = {
   db: db,
@@ -125,4 +136,6 @@ module.exports = {
   createScheduleRides: createScheduleRides,
   createCasualRidesDetails: createCasualRidesDetails,
   createBuddyRidesDetails: createBuddyRidesDetails,
+  createFeedbackTable: createFeedbackTable,
+  createTableAdmin: createTableAdmin
 };

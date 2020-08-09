@@ -75,7 +75,9 @@ socket.on('_pooling_results', params => {
     let parameters = {
         name: name,
         phone: passengerPhone,
-        coords: passengerLocation
+        coords: passengerLocation,
+        rideFare: params.rideFare,
+        rideId: params.rideId
     }
     // accept pool request
 
@@ -86,6 +88,8 @@ socket.on('_pooling_results', params => {
     poolBox.style.display = "block";
     msgElem.innerHTML = `${params.name} sent pool request`
     acceptBtn.addEventListener('click', (e) => {
+        // 
+        // document.getElementById('_est_cost').innerHTML = params.rideFare
         socket.emit("_passenger_locations", parameters);
         poolBox.style.display = "none";
 

@@ -293,6 +293,7 @@ function checkRides() {
         finalCost = Math.ceil(finalCost / 2);
         let div = document.getElementById('estimatedValues');
         div.innerHTML = "<b>Estimated Fare : </b><span>Rs." + finalCost + "</span>";
+        document.getElementById('fare').value = finalCost;
     }
 }
 

@@ -22,7 +22,7 @@
     <div class="header">
       <div class="container">
         <div class="logo">
-          <a href="/"><img src="images/logo.jpg" alt=""/></a>
+          <a href="/"><img src="images/logo.jpg" alt="" /></a>
         </div>
         <h1 id="passengerHeading">PASSENGER SIGNUP</h1>
 
@@ -43,13 +43,16 @@
     <div class="passengerForm">
       <h4><%= typeof error !='undefined' ? error : ""%></h4>
       <form action="/passengersignup" method="POST">
+        <label for="">Full Name</label>
         <input
           type="text"
           name="name"
           id="name"
-          placeholder="Full Name"
+          placeholder="Full Name (Only alphabets and spaces)"
+          pattern="^[a-zA-Z]+(\s[a-zA-Z]+)?$"
           required
         /><br />
+        <label for="">Email</label>
         <input
           type="email"
           name="email"
@@ -60,6 +63,7 @@
           required
         />
         <br />
+        <label for="">Phone Number</label>
         <input
           type="tel"
           name="phone"
@@ -68,6 +72,7 @@
           required
           pattern="[0-9]{4}-[0-9]{7}"
         /><br />
+        <label for="">Password</label>
         <input
           type="password"
           name="password"

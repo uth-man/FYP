@@ -98,11 +98,12 @@
         </div>
         <div class="col-md-6 contact_right">
           <h2>Write to us</h2>
-          <form>
+          <form method="GET" action="/contact/feedbacks">
             <div class="column_2">
               <input
                 type="text"
                 class="text"
+                name="name"
                 value="Name"
                 onfocus="this.value = '';"
                 onblur="if (this.value == '') {this.value = 'Name';}"
@@ -110,7 +111,9 @@
               <input
                 type="text"
                 class="text"
+                name="email"
                 value="Email"
+                required
                 onfocus="this.value = '';"
                 onblur="if (this.value == '') {this.value = 'Email';}"
                 style="margin-left: 2.7%;"
@@ -120,6 +123,7 @@
               <input
                 type="text"
                 class="text"
+                name="subject"
                 value="Subject"
                 onfocus="this.value = '';"
                 onblur="if (this.value == '') {this.value = 'Subject';}"
@@ -128,6 +132,8 @@
             <div class="column_3">
               <textarea
                 value="Message"
+                name="userMessage"
+                required
                 onfocus="this.value = '';"
                 onblur="if (this.value == '') {this.value = 'Message';}"
               >
@@ -135,9 +141,7 @@ Message</textarea
               >
             </div>
             <div class="form-submit1">
-              <label
-                class="btn btn-primary btn-normal btn-inline"
-                target="_self"
+              <label class="btn btn-primary btn-normal btn-inline" target=""
                 ><input type="submit" value="Submit"
               /></label>
             </div>
